@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语单词本 — 词根词缀记忆</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f6efe6;
+    --paper: rgba(255, 253, 248, 0.92);
+    --paper-solid: #fffdf8;
+    --sidebar: #241c18;
+    --sidebar-hover: rgba(255,255,255,0.1);
+    --ink: #2c2420;
+    --ink-soft: #5c534c;
+    --ink-muted: #9a8f86;
+    --coral: #d4623a;
+    --coral-dark: #b85530;
+    --coral-soft: #fdf0eb;
+    --sage: #4a7c6f;
+    --sage-soft: #e8f2ef;
+    --amber: #c9952a;
+    --amber-soft: #faf3e3;
+    --teal: #3d8b7a;
+    --red: #c44d4d;
+    --red-soft: #fdf0f0;
+    --green: #3d8b5a;
+    --green-soft: #eaf5ee;
+    --border: rgba(44,36,32,0.1);
+    --border-strong: rgba(44,36,32,0.16);
+    --shadow: 0 14px 40px rgba(44,36,32,0.10);
+    --shadow-soft: 0 8px 24px rgba(44,36,32,0.07);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --content-max: 980px;
+    --lh: 1.7;
+  }
+
+  html { font-size: 17px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(212,98,58,0.16), transparent 32%),
+      radial-gradient(circle at 86% 18%, rgba(74,124,111,0.15), transparent 30%),
+      linear-gradient(135deg, #f9f1e8 0%, #f6efe6 52%, #efe6da 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    display: flex;
+    line-height: var(--lh);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button, input { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, input:focus-visible { outline: 3px solid rgba(212,98,58,0.28); outline-offset: 2px; }
+
+  /* —— 侧边栏 —— */
+  .sidebar {
+    width: 268px;
+    min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.06), transparent 30%),
+      var(--sidebar);
+    color: #e8e0d8;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 10px 0 36px rgba(44,36,32,0.18);
+    z-index: 20;
+  }
+  .sidebar-brand {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .brand-icon {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, var(--coral), var(--amber));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 24px rgba(212,98,58,0.34);
+  }
+  .brand-title { font-size: 1.24rem; font-weight: 800; color: #fff; letter-spacing: 0.4px; }
+  .brand-sub { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-top: 6px; line-height: 1.45; }
+
+  .nav { padding: 18px 16px; flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 11px;
+    width: 100%; padding: 12px 15px;
+    border: 1px solid transparent; border-radius: 14px;
+    background: transparent; color: rgba(255,255,255,0.62);
+    font-size: 0.94rem; font-weight: 650; font-family: inherit;
+    cursor: pointer; text-align: left;
+    transition: transform 0.18s, background 0.18s, color 0.18s, border-color 0.18s;
+    margin-bottom: 7px;
+  }
+  .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px); border-color: rgba(255,255,255,0.08); }
+  .nav-item.active {
+    background: linear-gradient(135deg, var(--coral), var(--coral-dark));
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(212,98,58,0.36);
+  }
+  .nav-icon { font-size: 1rem; width: 22px; text-align: center; }
+
+  .sidebar-stats {
+    padding: 18px 22px 28px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .s-stat { margin-bottom: 14px; }
+  .s-stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+  .s-stat-value { font-size: 1.5rem; font-weight: 700; color: #fff; }
+  .s-stat-value.coral { color: var(--coral); }
+  .sidebar-progress { margin-top: 4px; }
+  .s-prog-bg { height: 5px; background: rgba(255,255,255,0.12); border-radius: 5px; margin-top: 8px; }
+  .s-prog-fg { height: 100%; background: linear-gradient(90deg, var(--coral), var(--amber)); border-radius: 5px; transition: width 0.4s; }
+
+  /* —— 主内容区 —— */
+  .main {
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    padding: clamp(24px, 4vw, 46px) clamp(20px, 5vw, 64px) 64px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .main > div { width: 100%; max-width: var(--content-max); }
+  .main-header {
+    margin-bottom: 26px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.68), rgba(255,253,248,0.35));
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 24px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+  }
+  .main-title { font-size: clamp(1.55rem, 2.5vw, 2.2rem); font-weight: 850; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.5px; line-height: 1.2; }
+  .main-desc { font-size: 0.98rem; color: var(--ink-muted); line-height: 1.55; }
+
+  .filter-bar {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px;
+    padding: 10px;
+    background: rgba(255,253,248,0.62);
+    border: 1px solid rgba(255,255,255,0.64);
+    border-radius: 22px;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(12px);
+  }
+  .filter-btn {
+    padding: 8px 16px; font-size: 0.88rem; font-family: inherit;
+    border: 1.5px solid var(--border); border-radius: 999px;
+    background: var(--paper-solid); color: var(--ink-soft);
+    cursor: pointer; transition: transform 0.16s, border-color 0.16s, color 0.16s, background 0.16s, box-shadow 0.16s;
+    box-shadow: 0 2px 8px rgba(44,36,32,0.04);
+  }
+  .filter-btn:hover { border-color: var(--coral); color: var(--coral); transform: translateY(-1px); }
+  .filter-btn.active { background: linear-gradient(135deg, var(--coral), var(--coral-dark)); border-color: transparent; color: #fff; box-shadow: 0 8px 18px rgba(212,98,58,0.26); }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,253,248,0.92));
+    border-radius: var(--radius);
+    padding: 18px 20px; border: 1px solid rgba(255,255,255,0.66);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--coral), var(--amber));
+    opacity: 0.86;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 6px; font-weight: 500; }
+  .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--ink); }
+  .stat-value.coral { color: var(--coral); }
+
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 8px; }
+  .progress-bar-bg { height: 8px; background: rgba(212,98,58,0.12); border-radius: 8px; overflow: hidden; }
+  .progress-bar-fg { height: 100%; background: linear-gradient(90deg, var(--coral), var(--amber)); border-radius: 8px; transition: width 0.4s; }
+
+  .section-title {
+    font-size: 0.82rem; font-weight: 600; color: var(--ink-muted);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* —— 单词卡片 —— */
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,253,248,0.94));
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.72);
+    padding: 24px 26px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    animation: fadeUp 0.3s ease both;
+    border-left: 5px solid transparent;
+    backdrop-filter: blur(10px);
+  }
+  .card:hover { box-shadow: var(--shadow); transform: translateY(-2px); border-color: rgba(212,98,58,0.18); }
+  .card.done { border-left-color: var(--green); }
+  .card.cat-work { border-left-color: var(--coral); }
+  .card.cat-internet { border-left-color: var(--teal); }
+  .card.cat-life { border-left-color: var(--green); }
+  .card.cat-study { border-left-color: var(--amber); }
+  .card.cat-emotion { border-left-color: #a36ad8; }
+  .card.cat-travel { border-left-color: #4b8bd6; }
+  .card.cat-pronoun, .card.cat-be, .card.cat-verb, .card.cat-tense, .card.cat-noun, .card.cat-adj, .card.cat-adv, .card.cat-time, .card.cat-place, .card.cat-prep, .card.cat-det, .card.cat-question, .card.cat-sentence { border-left-color: var(--sage); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .word-header { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .word-en { font-size: clamp(1.42rem, 3vw, 1.78rem); font-weight: 800; color: var(--ink); font-family: Georgia, 'Times New Roman', serif; letter-spacing: 0.2px; line-height: 1.2; }
+  .phonetic { font-size: 0.92rem; color: var(--ink-muted); background: rgba(44,36,32,0.04); padding: 3px 8px; border-radius: 999px; }
+  .word-cn { font-size: 1.08rem; color: var(--ink-soft); margin-bottom: 14px; font-weight: 650; }
+
+  .example {
+    font-size: 0.95rem; color: var(--ink-soft);
+    background: linear-gradient(135deg, rgba(232,242,239,0.95), rgba(255,255,255,0.65));
+    border-radius: 14px;
+    padding: 13px 16px; margin-bottom: 12px; line-height: var(--lh);
+    border-left: 4px solid var(--sage);
+  }
+
+  /* 词根词缀区 */
+  .roots-box {
+    background: linear-gradient(135deg, rgba(250,243,227,0.95), rgba(255,255,255,0.72));
+    border: 1px solid rgba(201,149,42,0.22);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .roots-title {
+    font-size: 0.82rem; font-weight: 700; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .roots-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .root-chip {
+    font-size: 0.9rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 8px;
+    border: 1px solid transparent; line-height: 1.4;
+  }
+  .root-chip.prefix { background: #fde8e0; color: #b84a28; border-color: rgba(212,98,58,0.25); }
+  .root-chip.root   { background: #e8f0fd; color: #3a5fa0; border-color: rgba(58,95,160,0.2); }
+  .root-chip.suffix { background: #e8f5ee; color: #2d6b4a; border-color: rgba(45,107,74,0.2); }
+  .root-chip.compound { background: #f3edf8; color: #6b4fa0; border-color: rgba(107,79,160,0.2); }
+  .roots-logic { font-size: 0.9rem; color: var(--ink-soft); line-height: var(--lh); margin-bottom: 8px; }
+  .roots-logic strong { color: var(--ink); }
+  .roots-family { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.5; }
+  .roots-family span { color: var(--sage); font-weight: 600; }
+
+  .tip {
+    font-size: 0.9rem; color: #5a4a2a;
+    background: linear-gradient(135deg, rgba(253,240,235,0.96), rgba(255,255,255,0.7));
+    border-radius: 14px;
+    padding: 11px 14px; margin-bottom: 16px; line-height: var(--lh);
+    border-left: 4px solid var(--coral);
+  }
+  .tip::before { content: '💡 联想：'; font-weight: 600; }
+  .usage-note {
+    font-size: 0.9rem;
+    color: #3f5f93;
+    background: linear-gradient(135deg, #eef5ff, rgba(255,255,255,0.78));
+    border: 1px solid rgba(58,95,160,0.16);
+    border-left: 4px solid #3a5fa0;
+    border-radius: 14px;
+    padding: 11px 14px;
+    margin-bottom: 12px;
+    line-height: var(--lh);
+  }
+  .usage-note strong { color: #2f4e83; }
+
+  .input-area { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+  .spell-input {
+    flex: 1; min-width: 220px;
+    border: 1.5px solid var(--border); border-radius: 14px;
+    padding: 13px 16px; font-size: 1rem; font-family: inherit;
+    outline: none; background: rgba(255,255,255,0.92); transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .spell-input:focus { border-color: var(--coral); background: #fff; box-shadow: 0 0 0 4px rgba(212,98,58,0.12); }
+  .spell-input.correct { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .spell-input.wrong { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+
+  .check-btn {
+    padding: 12px 18px; border-radius: 14px;
+    border: 1.5px solid var(--border); background: rgba(255,255,255,0.92);
+    font-size: 0.92rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; white-space: nowrap; color: var(--ink-soft);
+    transition: transform 0.15s, border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .check-btn:hover { border-color: var(--coral); color: var(--coral); background: var(--coral-soft); transform: translateY(-1px); }
+  .check-btn.primary { background: linear-gradient(135deg, var(--coral), var(--coral-dark)); border-color: transparent; color: #fff; box-shadow: 0 8px 18px rgba(212,98,58,0.22); }
+  .check-btn.primary:hover { background: linear-gradient(135deg, #df704b, var(--coral-dark)); color: #fff; }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .feedback { font-size: 0.9rem; margin-top: 10px; min-height: 18px; font-weight: 500; }
+  .feedback.ok { color: var(--green); }
+  .feedback.no { color: var(--red); }
+
+  .badge { display: inline-block; font-size: 0.78rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .badge-done { background: var(--green-soft); color: var(--green); }
+  .badge-todo { background: var(--coral-soft); color: var(--coral); }
+  .badge-cat { font-size: 0.72rem; padding: 4px 10px; border-radius: 999px; font-weight: 700; background: rgba(74,124,111,0.1); color: var(--sage); }
+  .badge-work { background: var(--coral-soft); color: var(--coral); }
+  .badge-internet { background: var(--sage-soft); color: var(--sage); }
+  .badge-life { background: var(--green-soft); color: var(--green); }
+  .badge-study { background: var(--amber-soft); color: var(--amber); }
+  .badge-emotion { background: #f3edf8; color: #6b4fa0; }
+  .badge-travel { background: #e8f0fd; color: #3a5fa0; }
+
+  .hidden { display: none; }
+  .empty-hint { text-align: center; padding: 56px 24px; color: var(--ink-muted); font-size: 1rem; }
+
+  /* —— 词根词缀速查页 —— */
+  .roots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .root-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,253,248,0.94));
+    border: 1px solid rgba(255,255,255,0.72);
+    border-radius: 20px; padding: 18px 20px;
+    box-shadow: var(--shadow-soft); animation: fadeUp 0.3s ease both;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .root-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .root-card-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .root-card-morph { font-size: 1.25rem; font-weight: 700; color: var(--coral); font-family: Georgia, serif; }
+  .root-card-type { font-size: 0.72rem; font-weight: 600; padding: 3px 8px; border-radius: 5px; }
+  .type-prefix { background: #fde8e0; color: #b84a28; }
+  .type-root   { background: #e8f0fd; color: #3a5fa0; }
+  .type-suffix { background: #e8f5ee; color: #2d6b4a; }
+  .root-card-mean { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 10px; line-height: var(--lh); }
+  .root-card-words { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.55; }
+  .root-card-words b { color: var(--sage); font-weight: 600; }
+
+  .roots-intro {
+    background: linear-gradient(135deg, var(--coral-soft), var(--amber-soft));
+    border: 1px solid rgba(212,98,58,0.15);
+    border-radius: var(--radius); padding: 18px 22px;
+    margin-bottom: 22px; font-size: 0.95rem; color: var(--ink-soft); line-height: var(--lh);
+  }
+  .roots-intro strong { color: var(--coral); }
+
+  .quiz-card .word-cn { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+
+  /* 回到顶部 */
+  .back-top {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--coral); color: #fff; border: none;
+    font-size: 1.1rem; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(212,98,58,0.35);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 100;
+  }
+  .back-top.show { opacity: 1; pointer-events: auto; }
+  .back-top:hover { transform: translateY(-2px); }
+
+  /* 滚动条美化 */
+  .main::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(44,36,32,0.15); border-radius: 6px;
+  }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+  @media (max-width: 1024px) {
+    .sidebar { width: 232px; }
+    .main { padding-left: 28px; padding-right: 28px; }
+  }
+
+  @media (max-width: 820px) {
+    html { font-size: 16px; }
+    body { flex-direction: column; }
+    .sidebar {
+      width: 100%; height: auto; min-height: 0; position: sticky; top: 0;
+      flex-direction: column; align-items: stretch;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 10px 30px rgba(44,36,32,0.18);
+    }
+    .sidebar-brand { padding: 14px 16px 10px; border-bottom: none; display: flex; align-items: center; gap: 12px; }
+    .brand-icon { width: 42px; height: 42px; border-radius: 13px; margin-bottom: 0; font-size: 21px; }
+    .brand-title { font-size: 1.08rem; }
+    .brand-sub { font-size: 0.74rem; margin-top: 2px; }
+    .nav {
+      display: grid; grid-template-columns: repeat(4, max-content);
+      padding: 8px 12px 12px; gap: 8px; overflow-x: auto; flex: none; width: 100%;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav-item { white-space: nowrap; flex-shrink: 0; margin-bottom: 0; padding: 9px 12px; border-radius: 999px; font-size: 0.86rem; }
+    .nav-item:hover { transform: none; }
+    .sidebar-stats { display: none; }
+    .main { padding: 18px 14px 74px; align-items: stretch; height: auto; min-height: 0; overflow-y: visible; }
+    .main > div { max-width: none; }
+    .main-header { padding: 18px 18px; border-radius: 20px; margin-bottom: 16px; }
+    .filter-bar { flex-wrap: nowrap; overflow-x: auto; padding: 8px; border-radius: 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-btn { flex: 0 0 auto; padding: 7px 13px; font-size: 0.82rem; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat-card { padding: 13px 12px 13px 15px; border-radius: 15px; }
+    .stat-label { font-size: 0.7rem; }
+    .stat-value { font-size: 1.22rem; }
+    .card { padding: 18px 16px; border-radius: 18px; margin-bottom: 13px; }
+    .word-header { gap: 8px; }
+    .word-en { width: 100%; }
+    .phonetic { font-size: 0.84rem; }
+    .input-area { flex-direction: column; gap: 8px; }
+    .spell-input { width: 100%; min-width: 0; }
+    .check-btn { width: 100%; justify-content: center; min-height: 46px; }
+    .roots-grid { grid-template-columns: 1fr; }
+    .back-top { bottom: 18px; right: 18px; width: 42px; height: 42px; }
+  }
+
+  @media (max-width: 420px) {
+    html { font-size: 15px; }
+    .main { padding-left: 10px; padding-right: 10px; }
+    .main-header { padding: 16px 14px; }
+    .stats-row { grid-template-columns: 1fr; }
+    .stat-card { display: flex; align-items: center; justify-content: space-between; }
+    .stat-label { margin-bottom: 0; }
+    .card { padding: 16px 14px; }
+    .roots-box, .example, .tip { padding: 11px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">📚</div>
+    <div>
+      <div class="brand-title">英语单词本</div>
+      <div class="brand-sub">词根词缀 · 拼写记忆</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-item active" onclick="switchTab('practice')"><span class="nav-icon">✏️</span>拼写练习</button>
+    <button class="nav-item" onclick="switchTab('review')"><span class="nav-icon">📋</span>全部词汇</button>
+    <button class="nav-item" onclick="switchTab('roots')"><span class="nav-icon">🧩</span>词根词缀</button>
+    <button class="nav-item" onclick="switchTab('quiz')"><span class="nav-icon">🎯</span>随机测试</button>
+  </nav>
+  <div class="sidebar-stats">
+    <div class="s-stat"><div class="s-stat-label">今日正确</div><div class="s-stat-value coral" id="sb-correct">0</div></div>
+    <div class="s-stat"><div class="s-stat-label">练习进度</div><div class="s-stat-value" id="sb-pct">0%</div></div>
+    <div class="sidebar-progress">
+      <div class="s-prog-bg"><div class="s-prog-fg" id="sb-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div id="tab-practice">
+    <div class="main-header">
+      <div class="main-title">拼写练习</div>
+      <div class="main-desc">看词根拆解 + 联想提示，动手拼写加深记忆</div>
+    </div>
+    <div class="filter-bar" id="practice-filter"></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">今日正确</div><div class="stat-value coral" id="correct-count">0</div></div>
+      <div class="stat-card"><div class="stat-label">已练习</div><div class="stat-value" id="practiced-count">0</div></div>
+      <div class="stat-card"><div class="stat-label">总词汇</div><div class="stat-value" id="total-count">0</div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta"><span>当前分类进度</span><span id="progress-pct">0%</span></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fg" id="progress-bar" style="width:0%"></div></div>
+    </div>
+    <div class="section-title">逐词拼写</div>
+    <div id="practice-list"></div>
+  </div>
+
+  <div id="tab-review" class="hidden">
+    <div class="main-header">
+      <div class="main-title">全部词汇</div>
+      <div class="main-desc">浏览词根拆解，建立词汇家族联想</div>
+    </div>
+    <div class="filter-bar" id="review-filter"></div>
+    <div id="review-list"></div>
+  </div>
+
+  <div id="tab-roots" class="hidden">
+    <div class="main-header">
+      <div class="main-title">词根词缀速查</div>
+      <div class="main-desc">掌握高频词根词缀，一个词根记住一串词</div>
+    </div>
+    <div class="roots-intro">
+      <strong>记忆口诀：</strong>先拆 morpheme（语素）→ 理解组合逻辑 → 联想同根词家族。
+      前缀改方向，词根定含义，后缀变词性。本页收录本书词汇中出现的高频词根词缀。
+    </div>
+    <div class="roots-grid" id="roots-grid"></div>
+  </div>
+
+  <div id="tab-quiz" class="hidden">
+    <div class="main-header">
+      <div class="main-title">随机测试</div>
+      <div class="main-desc">根据中文释义和例句，快速拼写检验记忆</div>
+    </div>
+    <div id="quiz-section"></div>
+  </div>
+</main>
+
+<button class="back-top" id="back-top" title="回到顶部">↑</button>
+
+<script>
+const words = [
+  { word: "important", phonetic: "/ɪmˈpɔːrtnt/", cn: "重要的", example: "This is the most important thing to remember.", tip: "最常用的高频形容词之一", cat: "work",
+    memo: "im + port → 被放在前面、被重视 → important 重要的", root: { parts: [{m:"im-",t:"prefix",cn:"加强"},{m:"port",t:"root",cn:"拿、带"},{m:"-ant",t:"suffix",cn:"形容词后缀"}], logic: "im + port → 被看重、被带在前面 → 重要的", family: "important, import, support" }},
+  { word: "technology", phonetic: "/tekˈnɑːlədʒi/", cn: "技术；科技", example: "Technology changes the way we work.", tip: "科技相关高频词", cat: "internet",
+    memo: "tech（技术）+ ology（学问）→ 技术这门学问 → 科技", root: { parts: [{m:"tech",t:"root",cn:"技艺、技术"},{m:"-ology",t:"suffix",cn:"学科/研究"}], logic: "tech + ology → 技术相关的学问 → 科技/技术", family: "technology, technical, technique" }},
+  { word: "possible", phonetic: "/ˈpɑːsəbl/", cn: "可能的", example: "Is it possible to finish today?", tip: "日常高频词", cat: "work",
+    root: { parts: [{m:"poss",t:"root",cn:"能、能力"},{m:"-ible",t:"suffix",cn:"能够…的"}], logic: "poss（能）+ ible → 能做到的 → 可能的", family: "possible, impossible, possibility" }},
+  { word: "support", phonetic: "/səˈpɔːrt/", cn: "支持；支撑", example: "Thank you for your support.", tip: "高频万能词", cat: "work",
+    root: { parts: [{m:"sub-",t:"prefix",cn:"在下、下面"},{m:"port",t:"root",cn:"承载、支撑"}], logic: "sub + port → 在下面托住 → 支持/支撑", family: "support, import, export, report" }},
+  { word: "change", phonetic: "/tʃeɪndʒ/", cn: "改变；变化", example: "People change over time.", tip: "最基础高频词", cat: "work",
+    root: { parts: [{m:"change",t:"root",cn:"改变"}], logic: "change → 变化、改变", family: "change, exchange" }},
+  { word: "develop", phonetic: "/dɪˈveləp/", cn: "发展；开发", example: "We need to develop a new plan.", tip: "工作和学习都很常见", cat: "work",
+    root: { parts: [{m:"de-",t:"prefix",cn:"展开"},{m:"velop",t:"root",cn:"包裹、展开"}], logic: "de + velop → 展开 → 发展/开发", family: "develop, development" }},
+  { word: "provide", phonetic: "/prəˈvaɪd/", cn: "提供", example: "We provide free support to users.", tip: "最常见动词之一", cat: "work",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前、提前"},{m:"vide",t:"root",cn:"看见、准备"}], logic: "pro + vide → 提前准备好给出 → 提供", family: "provide, provider, provision" }},
+  { word: "plan", phonetic: "/plæn/", cn: "计划", example: "Let's make a plan for next week.", tip: "最基础高频名词/动词", cat: "work",
+    root: { parts: [{m:"plan",t:"root",cn:"平面、计划"}], logic: "plan → 安排好的路线/计划", family: "plan, planning, planned" }},
+  { word: "team", phonetic: "/tiːm/", cn: "团队", example: "Our team works closely together.", tip: "职场高频词", cat: "work",
+    root: { parts: [{m:"team",t:"root",cn:"一组人"}], logic: "team → 团队、队伍", family: "team, teamwork" }},
+  { word: "result", phonetic: "/rɪˈzʌlt/", cn: "结果", example: "We got good results from the test.", tip: "报告里经常出现", cat: "work",
+    root: { parts: [{m:"re-",t:"prefix",cn:"回、再次"},{m:"sult",t:"root",cn:"跳、向上"}], logic: "re + sult → 跳出来的东西 → 结果", family: "result, results" }},
+  { word: "product", phonetic: "/ˈprɑːdʌkt/", cn: "产品；产物", example: "This product is popular with users.", tip: "商品/产物高频词", cat: "work",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前"},{m:"duct",t:"root",cn:"引导、带出"}], logic: "pro + duct → 带出来的东西 → 产品", family: "product, produce, production" }},
+  { word: "problem", phonetic: "/ˈprɑːbləm/", cn: "问题", example: "We need to solve this problem quickly.", tip: "最常见基础词", cat: "work",
+    root: { parts: [{m:"problem",t:"root",cn:"问题"}], logic: "problem → 需要解决的问题", family: "problem, problematic" }},
+  { word: "family", phonetic: "/ˈfæməli/", cn: "家庭；家族", example: "My family lives in Beijing.", tip: "基础高频词", cat: "work",
+    root: { parts: [{m:"fam",t:"root",cn:"家庭"}], logic: "family ← fam（家庭）+ -ily（集合名词感）", family: "family, familiar, famous" }},
+  { word: "improve", phonetic: "/ɪmˈpruːv/", cn: "改善；提高", example: "We need to improve our service quality.", tip: "工作和学习场景都很常见", cat: "work",
+    root: { parts: [{m:"im-",t:"prefix",cn:"进入、向内"},{m:"prove",t:"root",cn:"证明、变好"}], logic: "im + prove → 变得更好 → 改善/提高", family: "improve, improvement" }},
+  { word: "include", phonetic: "/ɪnˈkluːd/", cn: "包括；包含", example: "The price includes tax.", tip: "阅读和写作高频词", cat: "work",
+    root: { parts: [{m:"in-",t:"prefix",cn:"向内"},{m:"clud/clus",t:"root",cn:"关闭、包住"}], logic: "in + clude → 放进里面 → 包括/包含", family: "include, exclude, conclude" }},
+  { word: "consider", phonetic: "/kənˈsɪdər/", cn: "考虑；认为", example: "Please consider our suggestion.", tip: "表达意见时很常用", cat: "work",
+    root: { parts: [{m:"con-",t:"prefix",cn:"共同、一起"},{m:"sider",t:"root",cn:"星星、观察"}], logic: "con + sider → 一起仔细看 → 考虑", family: "consider, considerable, consideration" }},
+  { word: "create", phonetic: "/kriˈeɪt/", cn: "创造；创建", example: "We want to create better experiences.", tip: "产品、设计、内容场景常见", cat: "work",
+    root: { parts: [{m:"cre",t:"root",cn:"生长、创造"},{m:"-ate",t:"suffix",cn:"动词后缀"}], logic: "cre + ate → 产生出来 → 创造/创建", family: "create, creative, creation" }},
+  { word: "increase", phonetic: "/ˈɪnkriːs/", cn: "增加；增长", example: "Sales increased this month.", tip: "数据、趋势类高频词", cat: "work",
+    root: { parts: [{m:"in-",t:"prefix",cn:"向内、向上"},{m:"crease",t:"root",cn:"增长"}], logic: "in + crease → 往上长 → 增加", family: "increase, increasingly" }},
+  { word: "customer", phonetic: "/ˈkʌstəmər/", cn: "顾客；客户", example: "We need to understand the customer better.", tip: "商业场景高频词", cat: "work",
+    root: { parts: [{m:"custom",t:"root",cn:"习惯、定制"},{m:"-er",t:"suffix",cn:"人/物后缀"}], logic: "customer → 习惯来买的人 → 顾客/客户", family: "customer, customize, custom" }},
+  { word: "quality", phonetic: "/ˈkwɑːləti/", cn: "质量；品质", example: "Quality is our top priority.", tip: "产品和评价中很常见", cat: "work",
+    root: { parts: [{m:"qual",t:"root",cn:"性质、资格"},{m:"-ity",t:"suffix",cn:"名词后缀"}], logic: "qual + ity → 性质、水平 → 质量/品质", family: "quality, qualify, qualification" }},
+  { word: "value", phonetic: "/ˈvæljuː/", cn: "价值；重视", example: "We value your feedback.", tip: "商务表达高频词", cat: "work",
+    root: { parts: [{m:"val",t:"root",cn:"强壮、价值"},{m:"-ue",t:"suffix",cn:"词尾"}], logic: "value → 有价值；重视", family: "value, valuable, evaluate" }},
+  { word: "service", phonetic: "/ˈsɜːrvɪs/", cn: "服务", example: "The service is fast and reliable.", tip: "平台、餐饮、客服都常见", cat: "work",
+    root: { parts: [{m:"serv",t:"root",cn:"服务、保护"},{m:"-ice",t:"suffix",cn:"名词后缀"}], logic: "serv + ice → 服务行为/状态 → 服务", family: "service, server, servant" }},
+  { word: "experience", phonetic: "/ɪkˈspɪriəns/", cn: "经历；经验", example: "This job gives me valuable experience.", tip: "面试和工作描述常用", cat: "work",
+    root: { parts: [{m:"ex-",t:"prefix",cn:"向外"},{m:"peri",t:"root",cn:"尝试、冒险"},{m:"-ence",t:"suffix",cn:"名词后缀"}], logic: "ex + peri + ence → 走出去尝试过 → 经历/经验", family: "experience, experienced, experiment" }},
+  { word: "decision", phonetic: "/dɪˈsɪʒən/", cn: "决定；决策", example: "We made a difficult decision.", tip: "会议与管理高频词", cat: "work",
+    root: { parts: [{m:"de-",t:"prefix",cn:"向下、彻底"},{m:"cis",t:"root",cn:"切割"},{m:"-ion",t:"suffix",cn:"名词后缀"}], logic: "de + cis + ion → 切定下来 → 决定", family: "decision, decide, decisive" }},
+  { word: "opportunity", phonetic: "/ˌɑːpərˈtuːnəti/", cn: "机会", example: "This is a great opportunity to learn.", tip: "面试、自我介绍高频词", cat: "work",
+    root: { parts: [{m:"op-",t:"prefix",cn:"朝向"},{m:"port",t:"root",cn:"门、机会"},{m:"-unity",t:"suffix",cn:"名词后缀"}], logic: "op + port + unity → 打开的门 → 机会", family: "opportunity, opportunistic" }},
+  { word: "technology", phonetic: "/tekˈnɑːlədʒi/", cn: "技术；科技", example: "Technology changes the way we work.", tip: "科技相关高频词", cat: "internet",
+    root: { parts: [{m:"tech",t:"root",cn:"技艺、技术"},{m:"-ology",t:"suffix",cn:"学科/研究"}], logic: "tech + ology → 技术相关的学问 → 科技/技术", family: "technology, technical, technique" }},
+  { word: "network", phonetic: "/ˈnetwɜːrk/", cn: "网络；关系网", example: "A strong network helps your career.", tip: "互联网和人脉都可用", cat: "internet",
+    root: { parts: [{m:"net",t:"root",cn:"网"},{m:"work",t:"root",cn:"工作、运作"}], logic: "net + work → 像网一样连接起来的系统 → 网络", family: "network, networking" }},
+  { word: "download", phonetic: "/ˌdaʊnˈloʊd/", cn: "下载", example: "Please download the app first.", tip: "数字产品高频词", cat: "internet",
+    root: { parts: [{m:"down",t:"compound",cn:"向下"},{m:"load",t:"root",cn:"装载"}], logic: "down + load → 往下装到本地 → 下载", family: "download, upload" }},
+  { word: "upload", phonetic: "/ˌʌpˈloʊd/", cn: "上传", example: "You can upload your photo here.", tip: "平台操作高频词", cat: "internet",
+    root: { parts: [{m:"up",t:"compound",cn:"向上"},{m:"load",t:"root",cn:"装载"}], logic: "up + load → 往上装到服务器 → 上传", family: "upload, download" }},
+  { word: "account", phonetic: "/əˈkaʊnt/", cn: "账户；账号", example: "Create an account to continue.", tip: "注册登录场景高频词", cat: "internet",
+    root: { parts: [{m:"ac-",t:"prefix",cn:"到、朝向"},{m:"count",t:"root",cn:"计数、叙述"}], logic: "account → 记下并统计的条目 → 账户/账号", family: "account, accountant" }},
+  { word: "access", phonetic: "/ˈækses/", cn: "访问；接近；权限", example: "You need access to this page.", tip: "权限与系统常用词", cat: "internet",
+    root: { parts: [{m:"ac-",t:"prefix",cn:"到、朝向"},{m:"cess",t:"root",cn:"去、走"}], logic: "access → 走过去接近/进入 → 访问、权限", family: "access, accessible, success" }},
+  { word: "device", phonetic: "/dɪˈvaɪs/", cn: "设备；装置", example: "Your device is not connected.", tip: "手机、电脑语境高频词", cat: "internet",
+    root: { parts: [{m:"de-",t:"prefix",cn:"向下、离开"},{m:"vice",t:"root",cn:"替代、装置"}], logic: "device → 用来完成任务的装置", family: "device, deviate" }},
+  { word: "connect", phonetic: "/kəˈnekt/", cn: "连接；接通", example: "Please connect to Wi-Fi.", tip: "网络基础词", cat: "internet",
+    root: { parts: [{m:"con-",t:"prefix",cn:"共同、一起"},{m:"nect",t:"root",cn:"系、连接"}], logic: "con + nect → 连在一起 → 连接", family: "connect, connection, connected" }},
+  { word: "message", phonetic: "/ˈmesɪdʒ/", cn: "消息；信息", example: "I sent you a message earlier.", tip: "聊天场景高频词", cat: "internet",
+    root: { parts: [{m:"mess",t:"root",cn:"派遣、发送"},{m:"-age",t:"suffix",cn:"名词后缀"}], logic: "message → 传送来的信息 → 消息", family: "message, messenger" }},
+  { word: "privacy", phonetic: "/ˈpraɪvəsi/", cn: "隐私", example: "We care about your privacy.", tip: "数据与应用设置高频词", cat: "internet",
+    root: { parts: [{m:"priv",t:"root",cn:"私人、分开"},{m:"-acy",t:"suffix",cn:"状态/性质"}], logic: "priv + acy → 私人的状态 → 隐私", family: "privacy, private" }},
+  { word: "support", phonetic: "/səˈpɔːrt/", cn: "支持；支撑", example: "Thank you for your support.", tip: "高频万能词", cat: "work",
+    root: { parts: [{m:"sub-",t:"prefix",cn:"在下、下面"},{m:"port",t:"root",cn:"承载、支撑"}], logic: "sub + port → 在下面托住 → 支持/支撑", family: "support, import, export, report" }},
+  { word: "project", phonetic: "/ˈprɑːdʒekt/", cn: "项目；投射", example: "This project will take two months.", tip: "职场项目高频词", cat: "work",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前"},{m:"ject",t:"root",cn:"投、扔"}], logic: "pro + ject → 往前推出的工作 → 项目", family: "project, projection, projector" }},
+  { word: "redirect", phonetic: "/ˌriːdəˈrekt/", cn: "重定向；改道", example: "The page will redirect to the new address.", tip: "技术/网页场景常见", cat: "internet",
+    root: { parts: [{m:"re-",t:"prefix",cn:"再次、回"},{m:"direct",t:"root",cn:"指引、引导"}], logic: "re + direct → 再次引导到别处 → 重定向", family: "redirect, redirection" }, memo: "re = 再次，direct = 指引；redirect 就是‘重新指向别处’"},
+  { word: "button", phonetic: "/ˈbʌtn/", cn: "按钮", example: "Click the button to continue.", tip: "软件界面最常见", cat: "internet",
+    root: { parts: [{m:"button",t:"root",cn:"按钮"}], logic: "button → 按钮、按钮控件", family: "button, buttons" }, memo: "你在软件里看到的 button，就是‘按钮’"},
+  { word: "click", phonetic: "/klɪk/", cn: "点击；单击", example: "Click here to open the file.", tip: "所有软件都会见到", cat: "internet",
+    root: { parts: [{m:"click",t:"root",cn:"点击"}], logic: "click → 鼠标点一下", family: "click, clicked" }, memo: "click = 点一下"},
+  { word: "open", phonetic: "/ˈoʊpən/", cn: "打开", example: "Open the file and read it.", tip: "最常见操作词", cat: "internet",
+    root: { parts: [{m:"open",t:"root",cn:"打开"}], logic: "open → 打开、开启", family: "open, opening" }, memo: "open = 打开"},
+  { word: "close", phonetic: "/kloʊz/", cn: "关闭；关上", example: "Please close the window.", tip: "软件和窗口操作常见", cat: "internet",
+    root: { parts: [{m:"close",t:"root",cn:"关闭"}], logic: "close → 关闭、合上", family: "close, closed" }, memo: "close = 关闭"},
+  { word: "save", phonetic: "/seɪv/", cn: "保存；节省", example: "Don't forget to save the document.", tip: "编辑时最重要的按钮之一", cat: "internet",
+    root: { parts: [{m:"save",t:"root",cn:"保存"}], logic: "save → 保存、存储", family: "save, saved" }, memo: "save = 保存"},
+  { word: "delete", phonetic: "/dɪˈliːt/", cn: "删除", example: "Delete the old file if you don't need it.", tip: "误删前先确认", cat: "internet",
+    root: { parts: [{m:"de-",t:"prefix",cn:"去除"},{m:"lete",t:"root",cn:"清除"}], logic: "de + lete → 去掉、删除", family: "delete, deleted" }, memo: "delete = 删除"},
+  { word: "upload", phonetic: "/ˌʌpˈloʊd/", cn: "上传", example: "Upload your photo here.", tip: "文件提交常见", cat: "internet",
+    root: { parts: [{m:"up",t:"compound",cn:"向上"},{m:"load",t:"root",cn:"装载"}], logic: "up + load → 往上装到服务器 → 上传", family: "upload, download" }, memo: "upload = 往上送"},
+  { word: "download", phonetic: "/ˌdaʊnˈloʊd/", cn: "下载", example: "Download the update first.", tip: "安装包、附件常见", cat: "internet",
+    root: { parts: [{m:"down",t:"compound",cn:"向下"},{m:"load",t:"root",cn:"装载"}], logic: "down + load → 往下装到本地 → 下载", family: "download, upload" }, memo: "download = 往下拉到本地"},
+  { word: "settings", phonetic: "/ˈsetɪŋz/", cn: "设置", example: "Open Settings to change preferences.", tip: "软件入口词", cat: "internet",
+    root: { parts: [{m:"set",t:"root",cn:"设置、安放"},{m:"-ings",t:"suffix",cn:"复数/状态"}], logic: "settings → 各种设置选项", family: "set, settings" }, memo: "settings = 设置"},
+  { word: "preferences", phonetic: "/ˈprefrənsɪz/", cn: "偏好设置", example: "Change the preferences in this menu.", tip: "菜单里常见", cat: "internet",
+    root: { parts: [{m:"pre-",t:"prefix",cn:"提前、前置"},{m:"fer",t:"root",cn:"带来、偏向"}], logic: "preferences → 你偏向选择的设置", family: "preference, preferences" }, memo: "preferences = 偏好设置"},
+  { word: "apply", phonetic: "/əˈplaɪ/", cn: "应用；申请", example: "Apply the changes before closing.", tip: "按钮和表单都常见", cat: "internet",
+    root: { parts: [{m:"ap-",t:"prefix",cn:"到、朝向"},{m:"ply",t:"root",cn:"叠放、应用"}], logic: "apply → 把设置应用上去", family: "apply, application" }, memo: "apply = 应用/提交申请"},
+  { word: "cancel", phonetic: "/ˈkænsəl/", cn: "取消", example: "Click cancel to exit.", tip: "表单按钮高频", cat: "internet",
+    root: { parts: [{m:"cancel",t:"root",cn:"取消"}], logic: "cancel → 取消、作废", family: "cancel, cancelled" }, memo: "cancel = 取消"},
+  { word: "confirm", phonetic: "/kənˈfɜːrm/", cn: "确认", example: "Please confirm your email address.", tip: "提交前常见", cat: "internet",
+    root: { parts: [{m:"con-",t:"prefix",cn:"一起、加强"},{m:"firm",t:"root",cn:"坚固、确定"}], logic: "con + firm → 变得确定 → 确认", family: "confirm, confirmation" }, memo: "confirm = 确认"},
+  { word: "submit", phonetic: "/səbˈmɪt/", cn: "提交；递交", example: "Submit the form when you're ready.", tip: "表单按钮必会见到", cat: "internet",
+    root: { parts: [{m:"sub-",t:"prefix",cn:"在下、放下"},{m:"mit",t:"root",cn:"送、放出"}], logic: "sub + mit → 送交下去 → 提交", family: "submit, submitted" }, memo: "submit = 提交"},
+  { word: "cancel", phonetic: "/ˈkænsəl/", cn: "取消", example: "Click cancel to exit.", tip: "表单按钮高频", cat: "internet",
+    root: { parts: [{m:"cancel",t:"root",cn:"取消"}], logic: "cancel → 取消、作废", family: "cancel, cancelled" }, memo: "cancel = 取消"},
+  { word: "accept", phonetic: "/əkˈsept/", cn: "接受；同意", example: "Accept the terms to continue.", tip: "协议和弹窗很常见", cat: "internet",
+    root: { parts: [{m:"ac-",t:"prefix",cn:"朝向、到达"},{m:"cept",t:"root",cn:"拿、接收"}], logic: "ac + cept → 接受、接纳", family: "accept, acceptable" }, memo: "accept = 接受"},
+  { word: "reject", phonetic: "/rɪˈdʒekt/", cn: "拒绝；驳回", example: "Reject unknown requests.", tip: "权限/审核界面常见", cat: "internet",
+    root: { parts: [{m:"re-",t:"prefix",cn:"回、反"},{m:"ject",t:"root",cn:"扔、投"}], logic: "re + ject → 扔回去 → 拒绝/驳回", family: "reject, rejection" }, memo: "reject = 拒绝"},
+  { word: "download", phonetic: "/ˌdaʊnˈloʊd/", cn: "下载", example: "Download the update first.", tip: "安装包、附件常见", cat: "internet",
+    root: { parts: [{m:"down",t:"compound",cn:"向下"},{m:"load",t:"root",cn:"装载"}], logic: "down + load → 往下装到本地 → 下载", family: "download, upload" }, memo: "download = 往下拉到本地"},
+  { word: "upload", phonetic: "/ˌʌpˈloʊd/", cn: "上传", example: "Upload your photo here.", tip: "文件提交常见", cat: "internet",
+    root: { parts: [{m:"up",t:"compound",cn:"向上"},{m:"load",t:"root",cn:"装载"}], logic: "up + load → 往上装到服务器 → 上传", family: "upload, download" }, memo: "upload = 往上送"},
+  { word: "refresh", phonetic: "/rɪˈfreʃ/", cn: "刷新；更新", example: "Refresh the page if it looks wrong.", tip: "浏览器和列表里常见", cat: "internet",
+    root: { parts: [{m:"re-",t:"prefix",cn:"再次"},{m:"fresh",t:"root",cn:"新鲜、更新"}], logic: "re + fresh → 再次变新 → 刷新", family: "refresh, refreshed" }, memo: "refresh = 刷新"},
+  { word: "reload", phonetic: "/ˌriːˈloʊd/", cn: "重新加载", example: "Reload the page after changing settings.", tip: "网页/资源加载常见", cat: "internet",
+    root: { parts: [{m:"re-",t:"prefix",cn:"再次"},{m:"load",t:"root",cn:"装载"}], logic: "re + load → 再装一次 → 重新加载", family: "reload, reloaded" }, memo: "reload = 重新加载"},
+  { word: "search", phonetic: "/sɜːrtʃ/", cn: "搜索；查找", example: "Search for the file name.", tip: "软件与网页必备词", cat: "internet",
+    root: { parts: [{m:"search",t:"root",cn:"搜索"}], logic: "search → 搜索、查找", family: "search, searcher" }, memo: "search = 搜索"},
+  { word: "filter", phonetic: "/ˈfɪltər/", cn: "筛选；过滤", example: "Use the filter to show only today.", tip: "列表和后台常见", cat: "internet",
+    root: { parts: [{m:"filter",t:"root",cn:"过滤"}], logic: "filter → 过滤、筛选", family: "filter, filtered" }, memo: "filter = 筛选"},
+  { word: "sort", phonetic: "/sɔːrt/", cn: "排序", example: "Sort by date or name.", tip: "列表操作高频", cat: "internet",
+    root: { parts: [{m:"sort",t:"root",cn:"分类、排序"}], logic: "sort → 排序、整理", family: "sort, sorted" }, memo: "sort = 排序"},
+  { word: "share", phonetic: "/ʃer/", cn: "分享；共享", example: "Share this link with me.", tip: "协作软件常见", cat: "internet",
+    root: { parts: [{m:"share",t:"root",cn:"分享"}], logic: "share → 分享、共享", family: "share, shared" }, memo: "share = 分享"},
+  { word: "update", phonetic: "/ˌʌpˈdeɪt/", cn: "更新；升级", example: "Update the app to the latest version.", tip: "软件更新核心词", cat: "internet",
+    root: { parts: [{m:"up",t:"compound",cn:"向上"},{m:"date",t:"root",cn:"日期、信息"}], logic: "up + date → 更新到最新状态", family: "update, updated" }, memo: "update = 更新"},
+  { word: "install", phonetic: "/ɪnˈstɔːl/", cn: "安装", example: "Install the software first.", tip: "下载后常接着出现", cat: "internet",
+    root: { parts: [{m:"in-",t:"prefix",cn:"进入"},{m:"stall",t:"root",cn:"安放"}], logic: "in + stall → 放进去并安好 → 安装", family: "install, installed" }, memo: "install = 安装"},
+  { word: "version", phonetic: "/ˈvɜːrʒən/", cn: "版本", example: "Check your app version.", tip: "更新界面常见", cat: "internet",
+    root: { parts: [{m:"vers",t:"root",cn:"转、改变"},{m:"-ion",t:"suffix",cn:"名词后缀"}], logic: "vers + ion → 不同变化版 → 版本", family: "version, versioned" }, memo: "version = 版本"},
+  { word: "account", phonetic: "/əˈkaʊnt/", cn: "账户；账号", example: "Sign in to your account.", tip: "登录入口高频词", cat: "internet",
+    root: { parts: [{m:"ac-",t:"prefix",cn:"朝向"},{m:"count",t:"root",cn:"计数、叙述"}], logic: "account → 账户、账号", family: "account, accountant" }, memo: "account = 账户/账号"},
+  { word: "profile", phonetic: "/ˈproʊfaɪl/", cn: "资料；个人主页", example: "Open your profile to edit details.", tip: "用户界面常见", cat: "internet",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前"},{m:"file",t:"root",cn:"轮廓、档案"}], logic: "profile → 个人资料、轮廓", family: "profile, profiling" }, memo: "profile = 个人资料"},
+  { word: "login", phonetic: "/ˈlɔːɡɪn/", cn: "登录", example: "Login to continue.", tip: "网页和软件入口词", cat: "internet",
+    root: { parts: [{m:"log",t:"root",cn:"记录"},{m:"in",t:"compound",cn:"进入"}], logic: "log in → 记录后进入系统 → 登录", family: "login, log in" }, memo: "login = 登录"},
+  { word: "logout", phonetic: "/ˈlɔːɡaʊt/", cn: "退出登录", example: "Logout when you're finished.", tip: "账号安全高频词", cat: "internet",
+    root: { parts: [{m:"log",t:"root",cn:"记录"},{m:"out",t:"compound",cn:"出去"}], logic: "log out → 退出系统", family: "logout, log out" }, memo: "logout = 退出登录"},
+  { word: "permission", phonetic: "/pərˈmɪʃən/", cn: "权限；允许", example: "The app needs permission to use the camera.", tip: "系统权限界面必会见到", cat: "internet",
+    root: { parts: [{m:"per-",t:"prefix",cn:"完全、通过"},{m:"miss",t:"root",cn:"放走、允许"},{m:"-ion",t:"suffix",cn:"名词后缀"}], logic: "per + miss + ion → 允许通过的状态 → 权限/许可", family: "permission, permit" }, memo: "permission = 权限/允许"},
+  { word: "consent", phonetic: "/kənˈsent/", cn: "同意；许可", example: "We need your consent before we continue.", tip: "规则、隐私、授权常见", cat: "internet",
+    root: { parts: [{m:"con-",t:"prefix",cn:"共同、一同"},{m:"sent",t:"root",cn:"感受、认可"}], logic: "con + sent → 一起认可 → 同意/许可", family: "consent, consented" }, memo: "consent = 同意/许可"},
+  { word: "response", phonetic: "/rɪˈspɑːns/", cn: "回应；答复", example: "Thanks for your quick response.", tip: "沟通反馈高频词", cat: "work",
+    root: { parts: [{m:"re-",t:"prefix",cn:"回、再次"},{m:"spons",t:"root",cn:"承诺、回应"}], logic: "re + sponse → 回应、答复", family: "response, respond, responsible" }, memo: "response = 回复/回应"},
+  { word: "enter into", phonetic: "/ˈentər ˈɪntuː/", cn: "进入；参与；开始", example: "Do not enter into the room without permission.", tip: "固定短语，适合整体记忆", cat: "work",
+    root: { parts: [{m:"enter",t:"root",cn:"进入"},{m:"into",t:"compound",cn:"进入到里面"}], logic: "enter into → 进入到…里面；引申为参与、开始", family: "enter into" }, memo: "enter into = 进入到里面/开始参与"},
+  { word: "required", phonetic: "/rɪˈkwaɪərd/", cn: "必需的；要求的", example: "A password is required to continue.", tip: "表单和规则里高频", cat: "work",
+    root: { parts: [{m:"re-",t:"prefix",cn:"向后、再次"},{m:"quire",t:"root",cn:"寻求、请求"},{m:"-ed",t:"suffix",cn:"形容词/过去分词"}], logic: "re + quire + ed → 被要求的 → 必需的", family: "require, required, requirement" }},
+  { word: "first", phonetic: "/fɜːrst/", cn: "第一；首先的", example: "Please finish the first step first.", tip: "顺序与步骤词", cat: "work",
+    root: { parts: [{m:"first",t:"root",cn:"第一"}], logic: "first → 第一、首先", family: "first, firstly" }},
+  { word: "eloquent", phonetic: "/ˈeləkwənt/", cn: "口才好的；雄辩的", example: "She gave an eloquent speech.", tip: "表达、演讲高频高级词", cat: "work",
+    root: { parts: [{m:"e-",t:"prefix",cn:"外、出来"},{m:"loqu",t:"root",cn:"说话"},{m:"-ent",t:"suffix",cn:"形容词后缀"}], logic: "e + loqu + ent → 说得流畅有力 → 雄辩的", family: "eloquent, eloquence" }},
+  { word: "response", phonetic: "/rɪˈspɑːns/", cn: "回应；答复", example: "Thanks for your quick response.", tip: "沟通反馈高频词", cat: "work",
+    root: { parts: [{m:"re-",t:"prefix",cn:"回、再次"},{m:"spons",t:"root",cn:"承诺、回应"}], logic: "re + sponse → 回应、答复", family: "response, respond, responsible" }},
+  { word: "school", phonetic: "/skuːl/", cn: "学校", example: "The school starts at eight.", tip: "基础场景词，常用于地点记忆", cat: "work",
+    root: { parts: [{m:"school",t:"root",cn:"学校"}], logic: "school → 学校、求学场所", family: "school, schoolwork" }},
+  { word: "milk", phonetic: "/mɪlk/", cn: "牛奶", example: "He drank a glass of milk.", tip: "基础生活词", cat: "work",
+    root: { parts: [{m:"milk",t:"root",cn:"牛奶"}], logic: "milk → 牛奶", family: "milk, milky" }},
+  { word: "those", phonetic: "/ðoʊz/", cn: "那些", example: "Those books are on the desk.", tip: "指示代词高频词", cat: "work",
+    root: { parts: [{m:"those",t:"root",cn:"那些"}], logic: "those → 指远处的那些", family: "those" }},
+  { word: "these", phonetic: "/ðiːz/", cn: "这些", example: "These ideas are very useful.", tip: "指示代词高频词", cat: "work",
+    root: { parts: [{m:"these",t:"root",cn:"这些"}], logic: "these → 指近处的这些", family: "these" }},
+  { word: "desktop", phonetic: "/ˈdesk.tɑːp/", cn: "桌面；台式机", example: "Save the file on the desktop.", tip: "电脑场景高频词", cat: "internet",
+    root: { parts: [{m:"desk",t:"root",cn:"桌子"},{m:"top",t:"root",cn:"顶部"}], logic: "desk + top → 桌面；台式机", family: "desktop" }},
+  { word: "desk", phonetic: "/desk/", cn: "书桌；办公桌", example: "Put the notebook on the desk.", tip: "生活/办公场景常见", cat: "work",
+    root: { parts: [{m:"desk",t:"root",cn:"桌子"}], logic: "desk → 桌子、书桌", family: "desk, desktop" }},
+  { word: "hour", phonetic: "/ˈaʊər/", cn: "小时", example: "Wait for one hour.", tip: "时间表达常用", cat: "work",
+    root: { parts: [{m:"hour",t:"root",cn:"小时"}], logic: "hour → 一小时", family: "hour, hourly" }},
+  { word: "that", phonetic: "/ðæt/", cn: "那个；那样的", example: "I think that plan works.", tip: "最常用连词/代词之一", cat: "work",
+    root: { parts: [{m:"that",t:"root",cn:"那个"}], logic: "that → 指示远处的那个/那样", family: "that" }},
+  { word: "feed", phonetic: "/fiːd/", cn: "喂；喂养；投喂", example: "Please feed the dog in the morning.", tip: "日常和平台内容里都能见到", cat: "work",
+    root: { parts: [{m:"feed",t:"root",cn:"喂养"}], logic: "feed → 提供食物/信息", family: "feed, feedback" }},
+  { word: "course", phonetic: "/kɔːrs/", cn: "课程；过程；航向", example: "I took an English course.", tip: "学习场景高频词", cat: "work",
+    root: { parts: [{m:"course",t:"root",cn:"路线、课程"}], logic: "course → 一段学习路线/过程", family: "course, coursework" }},
+  { word: "role", phonetic: "/roʊl/", cn: "角色；作用", example: "What is your role in the team?", tip: "工作职责高频词", cat: "work",
+    root: { parts: [{m:"role",t:"root",cn:"角色"}], logic: "role → 扮演的角色、作用", family: "role, roleplay" }},
+  { word: "color", phonetic: "/ˈkʌlər/", cn: "颜色；给…着色", example: "Choose a color you like.", tip: "基础但很实用", cat: "work",
+    root: { parts: [{m:"color",t:"root",cn:"颜色"}], logic: "color → 颜色、染色", family: "color, colorful" }},
+  { word: "memory", phonetic: "/ˈmeməri/", cn: "记忆；记忆力", example: "This story helps my memory.", tip: "学习方法核心词", cat: "work",
+    root: { parts: [{m:"memor",t:"root",cn:"记住、记忆"},{m:"-y",t:"suffix",cn:"名词后缀"}], logic: "memor + y → 记忆的能力 → 记忆", family: "memory, memorize, memorial" }},
+  { word: "dictionary", phonetic: "/ˈdɪkʃəneri/", cn: "词典", example: "Use a dictionary when you study.", tip: "查词工具高频词", cat: "work",
+    root: { parts: [{m:"dict",t:"root",cn:"说、宣告"},{m:"-ionary",t:"suffix",cn:"名词后缀"}], logic: "dict + ionary → 记录词义的工具 → 词典", family: "dictionary, dictation" }},
+  { word: "failed", phonetic: "/feɪld/", cn: "失败了的；未通过的", example: "The test failed because of a bug.", tip: "结果与状态表达高频", cat: "work",
+    root: { parts: [{m:"fail",t:"root",cn:"失败"},{m:"-ed",t:"suffix",cn:"过去分词/形容词"}], logic: "fail + ed → 失败的、未通过的", family: "fail, failed, failure" }},
+  { word: "ctrl", phonetic: "/kənˈtroʊl/", cn: "Ctrl 键；控制", example: "Press Ctrl to copy the text.", tip: "电脑快捷键场景词", cat: "internet",
+    root: { parts: [{m:"control",t:"root",cn:"控制"}], logic: "Ctrl → control 的缩写，表示控制键", family: "ctrl, control" }},
+  { word: "stock", phonetic: "/stɑːk/", cn: "库存；股票", example: "The stock is running low.", tip: "商业/电商高频词", cat: "work",
+    root: { parts: [{m:"stock",t:"root",cn:"储备、库存"}], logic: "stock → 储备、库存、股份", family: "stock, stockpile" }},
+  { word: "products", phonetic: "/ˈprɑːdʌkts/", cn: "产品们；商品", example: "Our products are easy to use.", tip: "产品介绍常见复数", cat: "work",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前"},{m:"duct",t:"root",cn:"带出、生产"}], logic: "products → 被生产出来的东西 → 产品", family: "product, products, production" }},
+  { word: "grok", phonetic: "/ɡrɑːk/", cn: "彻底理解；秒懂", example: "I finally grok the idea.", tip: "偏口语/技术圈用法", cat: "internet",
+    root: { parts: [{m:"grok",t:"root",cn:"深刻理解"}], logic: "grok → 直接理解到位", family: "grok" }},
+  { word: "fast", phonetic: "/fæst/", cn: "快的；快速地", example: "The system is fast and stable.", tip: "速度描述基础高频", cat: "work",
+    root: { parts: [{m:"fast",t:"root",cn:"快"}], logic: "fast → 快速、迅速", family: "fast, faster" }},
+  { word: "smiles", phonetic: "/smaɪlz/", cn: "微笑；笑容（复数）", example: "Her smiles made everyone relax.", tip: "情绪和氛围表达", cat: "work",
+    root: { parts: [{m:"smile",t:"root",cn:"微笑"}], logic: "smiles → 微笑的样子/笑容", family: "smile, smiles" }},
+  { word: "enter into", phonetic: "/ˈentər ˈɪntuː/", cn: "进入；参与；开始", example: "Do not enter into the room without permission.", tip: "固定短语，适合整体记忆", cat: "work",
+    root: { parts: [{m:"enter",t:"root",cn:"进入"},{m:"into",t:"compound",cn:"进入到里面"}], logic: "enter into → 进入到…里面；引申为参与、开始", family: "enter into" }},
+  { word: "entry", phonetic: "/ˈentri/", cn: "入口；条目；进入", example: "The entry is on the left.", tip: "和 enter 一起记", cat: "work",
+    root: { parts: [{m:"enter",t:"root",cn:"进入"},{m:"-y",t:"suffix",cn:"名词后缀"}], logic: "entry ← enter 的名词化 → 入口/条目", family: "entry, enter" }},
+  { word: "title", phonetic: "/ˈtaɪtl/", cn: "标题；称号", example: "Please give the article a clear title.", tip: "文章和页面常见", cat: "work",
+    root: { parts: [{m:"title",t:"root",cn:"标题、称号"}], logic: "title → 标题、称谓", family: "title, subtitle" }},
+  { word: "completed", phonetic: "/kəmˈpliːtɪd/", cn: "已完成的；完成了的", example: "The completed task is marked green.", tip: "结果状态词，和 complete 一起记", cat: "work",
+    root: { parts: [{m:"com-",t:"prefix",cn:"共同、完全"},{m:"plete",t:"root",cn:"填满、完成"},{m:"-ed",t:"suffix",cn:"过去分词/形容词"}], logic: "com + plete + ed → 已经完全完成", family: "complete, completed, completion" }},
+  { word: "took", phonetic: "/tʊk/", cn: "take 的过去式：拿了；花费了", example: "It took me two hours.", tip: "不规则动词高频", cat: "work",
+    root: { parts: [{m:"take",t:"root",cn:"拿、取"}], logic: "took 是 take 的过去式，表示拿了/花了时间", family: "take, took, taking" }},
+  { word: "speak", phonetic: "/spiːk/", cn: "说话；发言", example: "Please speak clearly.", tip: "表达和沟通高频词", cat: "work",
+    root: { parts: [{m:"speak",t:"root",cn:"说"}], logic: "speak → 说话、表达", family: "speak, speaker, speech" }},
+  { word: "more", phonetic: "/mɔːr/", cn: "更多的；更", example: "I need more time.", tip: "比较级和数量高频词", cat: "work",
+    root: { parts: [{m:"more",t:"root",cn:"更多"}], logic: "more → 更多、更大程度", family: "more, moreover" }},
+  { word: "consent", phonetic: "/kənˈsent/", cn: "同意；许可", example: "We need your consent before we continue.", tip: "规则、隐私、授权常见", cat: "internet",
+    root: { parts: [{m:"con-",t:"prefix",cn:"共同、一同"},{m:"sent",t:"root",cn:"感受、认可"}], logic: "con + sent → 一起认可 → 同意/许可", family: "consent, consented" }},
+
+  { word: "I", phonetic: "/aɪ/", cn: "我", example: "I am a student.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"I",t:"root",cn:"我"}], logic: "I = 我", family: "I, me" }, memo: "I = 我"},
+  { word: "you", phonetic: "/juː/", cn: "你；你们", example: "You are my friend.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"you",t:"root",cn:"你/你们"}], logic: "you = 你、你们", family: "you" }, memo: "you = 你/你们"},
+  { word: "he", phonetic: "/hiː/", cn: "他", example: "He is my friend.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"he",t:"root",cn:"他"}], logic: "he = 他", family: "he" }, memo: "he = 他"},
+  { word: "she", phonetic: "/ʃiː/", cn: "她", example: "She likes English.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"she",t:"root",cn:"她"}], logic: "she = 她", family: "she" }, memo: "she = 她"},
+  { word: "it", phonetic: "/ɪt/", cn: "它", example: "It is a book.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"it",t:"root",cn:"它"}], logic: "it = 它", family: "it" }, memo: "it = 它"},
+  { word: "we", phonetic: "/wiː/", cn: "我们", example: "We are ready.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"we",t:"root",cn:"我们"}], logic: "we = 我们", family: "we" }, memo: "we = 我们"},
+  { word: "they", phonetic: "/ðeɪ/", cn: "他们", example: "They are in the classroom.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"they",t:"root",cn:"他们"}], logic: "they = 他们", family: "they" }, memo: "they = 他们"},
+  { word: "am", phonetic: "/æm/", cn: "是；在", example: "I am a student.", tip: "be动词", cat: "be",
+    root: { parts: [{m:"am",t:"root",cn:"是、在"}], logic: "am = 是/在", family: "am, is, are" }, memo: "am = 是/在"},
+  { word: "is", phonetic: "/ɪz/", cn: "是；在", example: "He is my friend.", tip: "be动词", cat: "be",
+    root: { parts: [{m:"is",t:"root",cn:"是、在"}], logic: "is = 是/在", family: "am, is, are" }, memo: "is = 是/在"},
+  { word: "are", phonetic: "/ɑːr/", cn: "是；在", example: "They are in the classroom.", tip: "be动词", cat: "be",
+    root: { parts: [{m:"are",t:"root",cn:"是、在"}], logic: "are = 是/在", family: "am, is, are" }, memo: "are = 是/在"},
+  { word: "study", phonetic: "/ˈstʌdi/", cn: "学习", example: "She studies English carefully.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"study",t:"root",cn:"学习"}], logic: "study = 学习", family: "study, studied" }, memo: "study = 学习"},
+  { word: "like", phonetic: "/laɪk/", cn: "喜欢", example: "I like English.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"like",t:"root",cn:"喜欢"}], logic: "like = 喜欢", family: "like, liked" }, memo: "like = 喜欢"},
+  { word: "love", phonetic: "/lʌv/", cn: "爱；喜欢", example: "I love music.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"love",t:"root",cn:"爱、喜欢"}], logic: "love = 爱/喜欢", family: "love, loved" }, memo: "love = 爱/喜欢"},
+  { word: "play", phonetic: "/pleɪ/", cn: "玩；打球", example: "He plays basketball.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"play",t:"root",cn:"玩、打球"}], logic: "play = 玩/打球", family: "play, played" }, memo: "play = 玩"},
+  { word: "read", phonetic: "/riːd/", cn: "读", example: "I read a book every day.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"read",t:"root",cn:"读"}], logic: "read = 读", family: "read, reading" }, memo: "read = 读"},
+  { word: "watch", phonetic: "/wɑːtʃ/", cn: "看", example: "She watched TV last night.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"watch",t:"root",cn:"看、观看"}], logic: "watch = 看、观看", family: "watch, watched" }, memo: "watch = 看"},
+  { word: "see", phonetic: "/siː/", cn: "看见", example: "I saw a bird.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"see",t:"root",cn:"看见"}], logic: "see = 看见", family: "see, saw" }, memo: "see = 看见"},
+  { word: "look", phonetic: "/lʊk/", cn: "看", example: "Look at the blackboard.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"look",t:"root",cn:"看"}], logic: "look = 看", family: "look, looked" }, memo: "look = 看"},
+  { word: "listen", phonetic: "/ˈlɪsən/", cn: "听", example: "Listen carefully.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"listen",t:"root",cn:"听"}], logic: "listen = 听", family: "listen, listened" }, memo: "listen = 听"},
+  { word: "write", phonetic: "/raɪt/", cn: "写", example: "Write your name here.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"write",t:"root",cn:"写"}], logic: "write = 写", family: "write, wrote" }, memo: "write = 写"},
+  { word: "go", phonetic: "/ɡoʊ/", cn: "去", example: "I go to school by bus.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"go",t:"root",cn:"去"}], logic: "go = 去", family: "go, went" }, memo: "go = 去"},
+  { word: "come", phonetic: "/kʌm/", cn: "来", example: "Please come here.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"come",t:"root",cn:"来"}], logic: "come = 来", family: "come, came" }, memo: "come = 来"},
+  { word: "have", phonetic: "/hæv/", cn: "有；吃；喝", example: "I have breakfast at home.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"have",t:"root",cn:"有、吃、喝"}], logic: "have = 有/吃/喝", family: "have, had" }, memo: "have = 有/吃/喝"},
+  { word: "do", phonetic: "/duː/", cn: "做", example: "Do your homework.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"do",t:"root",cn:"做"}], logic: "do = 做", family: "do, did" }, memo: "do = 做"},
+  { word: "make", phonetic: "/meɪk/", cn: "制作；使", example: "Make a plan.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"make",t:"root",cn:"制作、使"}], logic: "make = 制作/使", family: "make, made" }, memo: "make = 制作/使"},
+  { word: "help", phonetic: "/help/", cn: "帮助", example: "Can you help me?", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"help",t:"root",cn:"帮助"}], logic: "help = 帮助", family: "help, helpful" }, memo: "help = 帮助"},
+  { word: "want", phonetic: "/wɑːnt/", cn: "想要", example: "I want a new book.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"want",t:"root",cn:"想要"}], logic: "want = 想要", family: "want, wanted" }, memo: "want = 想要"},
+  { word: "need", phonetic: "/niːd/", cn: "需要", example: "I need some water.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"need",t:"root",cn:"需要"}], logic: "need = 需要", family: "need, needed" }, memo: "need = 需要"},
+  { word: "know", phonetic: "/noʊ/", cn: "知道", example: "I know the answer.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"know",t:"root",cn:"知道"}], logic: "know = 知道", family: "know, known" }, memo: "know = 知道"},
+  { word: "think", phonetic: "/θɪŋk/", cn: "认为；想", example: "I think it's right.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"think",t:"root",cn:"认为、想"}], logic: "think = 认为/想", family: "think, thought" }, memo: "think = 想/认为"},
+  { word: "buy", phonetic: "/baɪ/", cn: "买", example: "Let's buy some milk.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"buy",t:"root",cn:"买"}], logic: "buy = 买", family: "buy, bought" }, memo: "buy = 买"},
+  { word: "take", phonetic: "/teɪk/", cn: "拿；带", example: "Take your book with you.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"take",t:"root",cn:"拿、带"}], logic: "take = 拿/带", family: "take, took" }, memo: "take = 拿/带"},
+  { word: "give", phonetic: "/ɡɪv/", cn: "给", example: "Give me a hand.", tip: "常见动作动词", cat: "verb",
+    root: { parts: [{m:"give",t:"root",cn:"给"}], logic: "give = 给", family: "give, gave" }, memo: "give = 给"},
+
+  { word: "went", phonetic: "/went/", cn: "go 的过去式：去了", example: "I went to school yesterday.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"go",t:"root",cn:"去"}], logic: "went 是 go 的过去式", family: "go, went" }, memo: "went = go 的过去式"},
+  { word: "came", phonetic: "/keɪm/", cn: "come 的过去式：来了", example: "She came home late.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"come",t:"root",cn:"来"}], logic: "came 是 come 的过去式", family: "come, came" }, memo: "came = come 的过去式"},
+  { word: "did", phonetic: "/dɪd/", cn: "do 的过去式：做了", example: "I did my homework.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"do",t:"root",cn:"做"}], logic: "did 是 do 的过去式", family: "do, did" }, memo: "did = do 的过去式"},
+  { word: "had", phonetic: "/həd/", cn: "have 的过去式：有；吃；喝", example: "I had breakfast.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"have",t:"root",cn:"有、吃、喝"}], logic: "had 是 have 的过去式", family: "have, had" }, memo: "had = have 的过去式"},
+  { word: "ate", phonetic: "/eɪt/", cn: "eat 的过去式：吃了", example: "He ate an apple.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"eat",t:"root",cn:"吃"}], logic: "ate 是 eat 的过去式", family: "eat, ate" }, memo: "ate = eat 的过去式"},
+  { word: "drank", phonetic: "/dræŋk/", cn: "drink 的过去式：喝了", example: "She drank some milk.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"drink",t:"root",cn:"喝"}], logic: "drank 是 drink 的过去式", family: "drink, drank" }, memo: "drank = drink 的过去式"},
+  { word: "saw", phonetic: "/sɔː/", cn: "see 的过去式：看见了", example: "I saw a cat.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"see",t:"root",cn:"看见"}], logic: "saw 是 see 的过去式", family: "see, saw" }, memo: "saw = see 的过去式"},
+  { word: "said", phonetic: "/sed/", cn: "say 的过去式：说了", example: "He said hello.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"say",t:"root",cn:"说"}], logic: "said 是 say 的过去式", family: "say, said" }, memo: "said = say 的过去式"},
+  { word: "made", phonetic: "/meɪd/", cn: "make 的过去式：制作了", example: "She made a cake.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"make",t:"root",cn:"制作"}], logic: "made 是 make 的过去式", family: "make, made" }, memo: "made = make 的过去式"},
+  { word: "took", phonetic: "/tʊk/", cn: "take 的过去式：拿了；花费了", example: "It took me two hours.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"take",t:"root",cn:"拿、取"}], logic: "took 是 take 的过去式", family: "take, took" }, memo: "took = take 的过去式"},
+  { word: "gave", phonetic: "/ɡeɪv/", cn: "give 的过去式：给了", example: "He gave me a gift.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"give",t:"root",cn:"给"}], logic: "gave 是 give 的过去式", family: "give, gave" }, memo: "gave = give 的过去式"},
+  { word: "bought", phonetic: "/bɔːt/", cn: "buy 的过去式：买了", example: "I bought a new pen.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"buy",t:"root",cn:"买"}], logic: "bought 是 buy 的过去式", family: "buy, bought" }, memo: "bought = buy 的过去式"},
+  { word: "thought", phonetic: "/θɔːt/", cn: "think 的过去式：认为；想了", example: "I thought about it.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"think",t:"root",cn:"想"}], logic: "thought 是 think 的过去式", family: "think, thought" }, memo: "thought = think 的过去式"},
+  { word: "wrote", phonetic: "/roʊt/", cn: "write 的过去式：写了", example: "She wrote a letter.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"write",t:"root",cn:"写"}], logic: "wrote 是 write 的过去式", family: "write, wrote" }, memo: "wrote = write 的过去式"},
+  { word: "slept", phonetic: "/slept/", cn: "sleep 的过去式：睡觉了", example: "He slept well last night.", tip: "必背过去式", cat: "tense",
+    root: { parts: [{m:"sleep",t:"root",cn:"睡觉"}], logic: "slept 是 sleep 的过去式", family: "sleep, slept" }, memo: "slept = sleep 的过去式"},
+
+  { word: "English", phonetic: "/ˈɪŋɡlɪʃ/", cn: "英语", example: "I study English every day.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"English",t:"root",cn:"英语"}], logic: "English = 英语", family: "English" }, memo: "English = 英语"},
+  { word: "Chinese", phonetic: "/tʃaɪˈniːz/", cn: "中文；语文", example: "Chinese is my favorite subject.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"Chinese",t:"root",cn:"中文/语文"}], logic: "Chinese = 中文/语文", family: "Chinese" }, memo: "Chinese = 中文"},
+  { word: "math", phonetic: "/mæθ/", cn: "数学", example: "Math is interesting.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"math",t:"root",cn:"数学"}], logic: "math = 数学", family: "math" }, memo: "math = 数学"},
+  { word: "music", phonetic: "/ˈmjuːzɪk/", cn: "音乐", example: "I like music.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"music",t:"root",cn:"音乐"}], logic: "music = 音乐", family: "music" }, memo: "music = 音乐"},
+  { word: "PE", phonetic: "/ˌpiː ˈiː/", cn: "体育", example: "We have PE on Monday.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"PE",t:"root",cn:"体育"}], logic: "PE = 体育", family: "PE" }, memo: "PE = 体育"},
+  { word: "art", phonetic: "/ɑːrt/", cn: "美术", example: "Art is fun.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"art",t:"root",cn:"美术"}], logic: "art = 美术", family: "art" }, memo: "art = 美术"},
+  { word: "student", phonetic: "/ˈstuːdnt/", cn: "学生", example: "I am a student.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"student",t:"root",cn:"学生"}], logic: "student = 学生", family: "student" }, memo: "student = 学生"},
+  { word: "teacher", phonetic: "/ˈtiːtʃər/", cn: "老师", example: "My teacher is kind.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"teacher",t:"root",cn:"老师"}], logic: "teacher = 老师", family: "teacher" }, memo: "teacher = 老师"},
+  { word: "friend", phonetic: "/frend/", cn: "朋友", example: "He is my friend.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"friend",t:"root",cn:"朋友"}], logic: "friend = 朋友", family: "friend, friendly" }, memo: "friend = 朋友"},
+  { word: "father", phonetic: "/ˈfɑːðər/", cn: "父亲", example: "My father works hard.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"father",t:"root",cn:"父亲"}], logic: "father = 父亲", family: "father" }, memo: "father = 父亲"},
+  { word: "mother", phonetic: "/ˈmʌðər/", cn: "母亲", example: "My mother is a teacher.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"mother",t:"root",cn:"母亲"}], logic: "mother = 母亲", family: "mother" }, memo: "mother = 母亲"},
+  { word: "brother", phonetic: "/ˈbrʌðər/", cn: "兄弟", example: "My brother likes sports.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"brother",t:"root",cn:"兄弟"}], logic: "brother = 兄弟", family: "brother" }, memo: "brother = 兄弟"},
+  { word: "sister", phonetic: "/ˈsɪstər/", cn: "姐妹", example: "My sister is smart.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"sister",t:"root",cn:"姐妹"}], logic: "sister = 姐妹", family: "sister" }, memo: "sister = 姐妹"},
+  { word: "family", phonetic: "/ˈfæməli/", cn: "家庭；家人", example: "My family is big.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"fam",t:"root",cn:"家庭"}], logic: "family ← fam（家庭）", family: "family, familiar, famous" }, memo: "family = 家庭"},
+  { word: "school", phonetic: "/skuːl/", cn: "学校", example: "They go to school every day.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"school",t:"root",cn:"学校"}], logic: "school = 学校", family: "school, schoolwork" }, memo: "school = 学校"},
+  { word: "classroom", phonetic: "/ˈklæsruːm/", cn: "教室", example: "They are in the classroom.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"class",t:"root",cn:"班级"},{m:"room",t:"root",cn:"房间"}], logic: "class + room → 教室", family: "classroom" }, memo: "classroom = 教室"},
+  { word: "room", phonetic: "/ruːm/", cn: "房间", example: "My room is clean.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"room",t:"root",cn:"房间"}], logic: "room = 房间", family: "room" }, memo: "room = 房间"},
+  { word: "home", phonetic: "/hoʊm/", cn: "家", example: "I go home after school.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"home",t:"root",cn:"家"}], logic: "home = 家", family: "home" }, memo: "home = 家"},
+  { word: "book", phonetic: "/bʊk/", cn: "书", example: "I read a book.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"book",t:"root",cn:"书"}], logic: "book = 书", family: "book, notebook" }, memo: "book = 书"},
+  { word: "pen", phonetic: "/pen/", cn: "钢笔", example: "This pen is blue.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"pen",t:"root",cn:"钢笔"}], logic: "pen = 钢笔", family: "pen" }, memo: "pen = 钢笔"},
+  { word: "pencil", phonetic: "/ˈpensl/", cn: "铅笔", example: "I have a pencil.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"pencil",t:"root",cn:"铅笔"}], logic: "pencil = 铅笔", family: "pencil" }, memo: "pencil = 铅笔"},
+  { word: "desk", phonetic: "/desk/", cn: "书桌；办公桌", example: "The book is on the desk.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"desk",t:"root",cn:"桌子"}], logic: "desk = 桌子", family: "desk, desktop" }, memo: "desk = 书桌"},
+  { word: "chair", phonetic: "/tʃer/", cn: "椅子", example: "Sit on the chair.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"chair",t:"root",cn:"椅子"}], logic: "chair = 椅子", family: "chair" }, memo: "chair = 椅子"},
+  { word: "bag", phonetic: "/bæɡ/", cn: "包", example: "Put your bag here.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"bag",t:"root",cn:"包"}], logic: "bag = 包", family: "bag" }, memo: "bag = 包"},
+  { word: "apple", phonetic: "/ˈæpl/", cn: "苹果", example: "I eat an apple every day.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"apple",t:"root",cn:"苹果"}], logic: "apple = 苹果", family: "apple" }, memo: "apple = 苹果"},
+  { word: "orange", phonetic: "/ˈɔːrɪndʒ/", cn: "橙子", example: "The orange is sweet.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"orange",t:"root",cn:"橙子"}], logic: "orange = 橙子", family: "orange" }, memo: "orange = 橙子"},
+  { word: "egg", phonetic: "/eɡ/", cn: "鸡蛋", example: "I had an egg for breakfast.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"egg",t:"root",cn:"鸡蛋"}], logic: "egg = 鸡蛋", family: "egg" }, memo: "egg = 鸡蛋"},
+  { word: "water", phonetic: "/ˈwɔːtər/", cn: "水", example: "Please drink more water.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"water",t:"root",cn:"水"}], logic: "water = 水", family: "water" }, memo: "water = 水"},
+  { word: "milk", phonetic: "/mɪlk/", cn: "牛奶", example: "I drink milk in the morning.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"milk",t:"root",cn:"牛奶"}], logic: "milk = 牛奶", family: "milk, milky" }, memo: "milk = 牛奶"},
+  { word: "rice", phonetic: "/raɪs/", cn: "米饭", example: "We eat rice for lunch.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"rice",t:"root",cn:"米饭"}], logic: "rice = 米饭", family: "rice" }, memo: "rice = 米饭"},
+  { word: "TV", phonetic: "/ˌtiːˈviː/", cn: "电视", example: "Watch TV at night.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"TV",t:"root",cn:"电视"}], logic: "TV = 电视", family: "TV" }, memo: "TV = 电视"},
+  { word: "basketball", phonetic: "/ˈbæskɪtbɔːl/", cn: "篮球", example: "He plays basketball.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"basket",t:"compound",cn:"篮子"},{m:"ball",t:"compound",cn:"球"}], logic: "basket + ball → 篮球", family: "basketball" }, memo: "basketball = 篮球"},
+  { word: "football", phonetic: "/ˈfʊtbɔːl/", cn: "足球", example: "They watch football on TV.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"foot",t:"compound",cn:"脚"},{m:"ball",t:"compound",cn:"球"}], logic: "foot + ball → 足球", family: "football" }, memo: "football = 足球"},
+  { word: "bus", phonetic: "/bʌs/", cn: "公交车", example: "I go by bus.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"bus",t:"root",cn:"公交车"}], logic: "bus = 公交车", family: "bus" }, memo: "bus = 公交车"},
+  { word: "bike", phonetic: "/baɪk/", cn: "自行车", example: "He rides a bike.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"bike",t:"root",cn:"自行车"}], logic: "bike = 自行车", family: "bike" }, memo: "bike = 自行车"},
+  { word: "car", phonetic: "/kɑːr/", cn: "汽车", example: "My father has a car.", tip: "常见名词", cat: "noun",
+    root: { parts: [{m:"car",t:"root",cn:"汽车"}], logic: "car = 汽车", family: "car" }, memo: "car = 汽车"},
+
+  { word: "good", phonetic: "/ɡʊd/", cn: "好的", example: "This is a good book.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"good",t:"root",cn:"好的"}], logic: "good = 好的", family: "good, better" }, memo: "good = 好的"},
+  { word: "bad", phonetic: "/bæd/", cn: "坏的", example: "That is a bad idea.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"bad",t:"root",cn:"坏的"}], logic: "bad = 坏的", family: "bad, worse" }, memo: "bad = 坏的"},
+  { word: "happy", phonetic: "/ˈhæpi/", cn: "开心的", example: "I am happy today.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"happy",t:"root",cn:"开心的"}], logic: "happy = 开心的", family: "happy, happily" }, memo: "happy = 开心的"},
+  { word: "sad", phonetic: "/sæd/", cn: "难过的", example: "She looks sad.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"sad",t:"root",cn:"难过的"}], logic: "sad = 难过的", family: "sad, sadness" }, memo: "sad = 难过的"},
+  { word: "tired", phonetic: "/ˈtaɪərd/", cn: "累的", example: "I am very tired.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"tire",t:"root",cn:"疲劳"},{m:"-ed",t:"suffix",cn:"形容词/过去分词"}], logic: "tired = 累的", family: "tired, tiring" }, memo: "tired = 累的"},
+  { word: "busy", phonetic: "/ˈbɪzi/", cn: "忙的", example: "He is busy now.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"busy",t:"root",cn:"忙的"}], logic: "busy = 忙的", family: "busy" }, memo: "busy = 忙的"},
+  { word: "free", phonetic: "/friː/", cn: "空闲的", example: "Are you free tomorrow?", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"free",t:"root",cn:"空闲、自由"}], logic: "free = 空闲的", family: "free, freely" }, memo: "free = 空闲的"},
+  { word: "hungry", phonetic: "/ˈhʌŋɡri/", cn: "饿的", example: "I am hungry.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"hungry",t:"root",cn:"饿的"}], logic: "hungry = 饿的", family: "hungry" }, memo: "hungry = 饿的"},
+  { word: "thirsty", phonetic: "/ˈθɜːrsti/", cn: "渴的", example: "I am thirsty.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"thirsty",t:"root",cn:"渴的"}], logic: "thirsty = 渴的", family: "thirsty" }, memo: "thirsty = 渴的"},
+  { word: "young", phonetic: "/jʌŋ/", cn: "年轻的", example: "My brother is young.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"young",t:"root",cn:"年轻的"}], logic: "young = 年轻的", family: "young" }, memo: "young = 年轻的"},
+  { word: "old", phonetic: "/oʊld/", cn: "老的；旧的", example: "This is an old book.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"old",t:"root",cn:"老的；旧的"}], logic: "old = 老的/旧的", family: "old" }, memo: "old = 老的/旧的"},
+  { word: "tall", phonetic: "/tɔːl/", cn: "高的", example: "He is tall.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"tall",t:"root",cn:"高的"}], logic: "tall = 高的", family: "tall" }, memo: "tall = 高的"},
+  { word: "short", phonetic: "/ʃɔːrt/", cn: "矮的；短的", example: "The pencil is short.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"short",t:"root",cn:"矮的；短的"}], logic: "short = 矮的/短的", family: "short" }, memo: "short = 矮/短"},
+  { word: "big", phonetic: "/bɪɡ/", cn: "大的", example: "This bag is big.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"big",t:"root",cn:"大的"}], logic: "big = 大的", family: "big" }, memo: "big = 大的"},
+  { word: "small", phonetic: "/smɔːl/", cn: "小的", example: "The room is small.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"small",t:"root",cn:"小的"}], logic: "small = 小的", family: "small" }, memo: "small = 小的"},
+  { word: "new", phonetic: "/nuː/", cn: "新的", example: "I have a new pen.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"new",t:"root",cn:"新的"}], logic: "new = 新的", family: "new" }, memo: "new = 新的"},
+  { word: "beautiful", phonetic: "/ˈbjuːtɪfl/", cn: "漂亮的", example: "The park is beautiful.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"beauty",t:"root",cn:"美"},{m:"-ful",t:"suffix",cn:"充满…的"}], logic: "beauty + ful → 漂亮的", family: "beautiful, beauty" }, memo: "beautiful = 漂亮的"},
+  { word: "nice", phonetic: "/naɪs/", cn: "好的；友善的", example: "She is nice to me.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"nice",t:"root",cn:"好的；友善的"}], logic: "nice = 好的/友善的", family: "nice" }, memo: "nice = 好的/友善的"},
+  { word: "difficult", phonetic: "/ˈdɪfɪkəlt/", cn: "困难的", example: "This question is difficult.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"difficult",t:"root",cn:"困难的"}], logic: "difficult = 困难的", family: "difficult" }, memo: "difficult = 困难的"},
+  { word: "easy", phonetic: "/ˈiːzi/", cn: "容易的", example: "The exam is easy.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"easy",t:"root",cn:"容易的"}], logic: "easy = 容易的", family: "easy" }, memo: "easy = 容易的"},
+  { word: "interesting", phonetic: "/ˈɪntrəstɪŋ/", cn: "有趣的", example: "The story is interesting.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"interest",t:"root",cn:"兴趣"},{m:"-ing",t:"suffix",cn:"现在分词/形容词"}], logic: "interest + ing → 让人感兴趣的", family: "interesting, interested, interest" }, memo: "interesting = 有趣的"},
+  { word: "careful", phonetic: "/ˈkerfl/", cn: "认真的；小心的", example: "Be careful with the glass.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"care",t:"root",cn:"关心、小心"},{m:"-ful",t:"suffix",cn:"充满…的"}], logic: "care + ful → 小心的", family: "careful, carefully" }, memo: "careful = 小心的"},
+  { word: "quiet", phonetic: "/ˈkwaɪət/", cn: "安静的", example: "The classroom is quiet.", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"quiet",t:"root",cn:"安静的"}], logic: "quiet = 安静的", family: "quiet, quietly" }, memo: "quiet = 安静的"},
+  { word: "ready", phonetic: "/ˈredi/", cn: "准备好的", example: "Are you ready?", tip: "状态形容词", cat: "adj",
+    root: { parts: [{m:"ready",t:"root",cn:"准备好的"}], logic: "ready = 准备好的", family: "ready" }, memo: "ready = 准备好的"},
+
+  { word: "redirect", phonetic: "/ˌriːdəˈrekt/", cn: "重定向；改道", example: "The page will redirect to the new address.", tip: "网页和系统跳转常见", cat: "internet",
+    root: { parts: [{m:"re-",t:"prefix",cn:"再次"},{m:"direct",t:"root",cn:"指向、引导"}], logic: "re + direct → 重新指向 → 重定向", family: "redirect, direction, direct" }, memo: "redirect = 重新指向别处"},
+  { word: "required", phonetic: "/rɪˈkwaɪərd/", cn: "必需的；要求的", example: "This field is required.", tip: "表单和提示信息常见", cat: "internet",
+    root: { parts: [{m:"require",t:"root",cn:"要求"},{m:"-ed",t:"suffix",cn:"被…的"}], logic: "required = 被要求的 → 必填/必需", family: "require, required, requirement" }, memo: "required = 必填/必须"},
+  { word: "first", phonetic: "/fɜːrst/", cn: "第一；首先", example: "Finish the first step first.", tip: "顺序词", cat: "time",
+    root: { parts: [{m:"first",t:"root",cn:"第一"}], logic: "first = 第一/首先", family: "first, firstly" }, memo: "first = 第一"},
+  { word: "eloquent", phonetic: "/ˈeləkwənt/", cn: "口才好的；雄辩的", example: "She gave an eloquent speech.", tip: "表达能力相关高级词", cat: "adj",
+    root: { parts: [{m:"e-",t:"prefix",cn:"向外"},{m:"loqu",t:"root",cn:"说话"},{m:"-ent",t:"suffix",cn:"形容词后缀"}], logic: "e + loqu + ent → 说得出来且有力 → 雄辩的", family: "eloquent, eloquence" }, memo: "loqu = 说，eloquent = 会说的"},
+  { word: "response", phonetic: "/rɪˈspɑːns/", cn: "回应；答复", example: "Thanks for your quick response.", tip: "邮件、消息、接口常见", cat: "work",
+    root: { parts: [{m:"re-",t:"prefix",cn:"回"},{m:"spons",t:"root",cn:"回应、承诺"}], logic: "re + spons → 回应", family: "response, respond, responsible" }, memo: "response = 回复/响应"},
+  { word: "was", phonetic: "/wʌz/", cn: "是；在（am/is 的过去式）", example: "It was cold yesterday.", tip: "be 动词过去式", cat: "be",
+    root: { parts: [{m:"was",t:"root",cn:"过去是"}], logic: "was = am/is 的过去式", family: "am, is, was" }, memo: "was = 曾经是"},
+  { word: "yesterday", phonetic: "/ˈjestərdeɪ/", cn: "昨天", example: "I was busy yesterday.", tip: "时间词", cat: "time",
+    root: { parts: [{m:"yester",t:"root",cn:"昨天的"},{m:"day",t:"root",cn:"天"}], logic: "yester + day → 昨天", family: "yesterday" }, memo: "yesterday = 昨天"},
+  { word: "ran", phonetic: "/ræn/", cn: "run 的过去式：跑了", example: "He ran to school yesterday.", tip: "不规则过去式", cat: "tense",
+    root: { parts: [{m:"run",t:"root",cn:"跑"}], logic: "ran = run 的过去式", family: "run, ran" }, memo: "ran = 跑了"},
+  { word: "there", phonetic: "/ðer/", cn: "那里；在那里", example: "Put the book there.", tip: "地点词", cat: "place",
+    root: { parts: [{m:"there",t:"root",cn:"那里"}], logic: "there = 那里", family: "there, here" }, memo: "there = 那里"},
+  { word: "they", phonetic: "/ðeɪ/", cn: "他们；她们；它们", example: "They are my classmates.", tip: "人称代词", cat: "pronoun",
+    root: { parts: [{m:"they",t:"root",cn:"他们"}], logic: "they = 他们", family: "they, them, their" }, memo: "they = 他们"},
+  { word: "school", phonetic: "/skuːl/", cn: "学校", example: "They go to school every day.", tip: "地点/学习词", cat: "study",
+    root: { parts: [{m:"school",t:"root",cn:"学校"}], logic: "school = 学校", family: "school, schoolwork" }, memo: "school = 学校"},
+  { word: "milk", phonetic: "/mɪlk/", cn: "牛奶", example: "I drink milk in the morning.", tip: "生活食物词", cat: "life",
+    root: { parts: [{m:"milk",t:"root",cn:"牛奶"}], logic: "milk = 牛奶", family: "milk, milky" }, memo: "milk = 牛奶"},
+  { word: "those", phonetic: "/ðoʊz/", cn: "那些", example: "Those books are mine.", tip: "指示代词", cat: "det",
+    root: { parts: [{m:"those",t:"root",cn:"那些"}], logic: "those = 远处/复数的那些", family: "those" }, memo: "those = 那些"},
+  { word: "these", phonetic: "/ðiːz/", cn: "这些", example: "These words are useful.", tip: "指示代词", cat: "det",
+    root: { parts: [{m:"these",t:"root",cn:"这些"}], logic: "these = 近处/复数的这些", family: "these" }, memo: "these = 这些"},
+  { word: "desktop", phonetic: "/ˈdesktɑːp/", cn: "桌面；台式机", example: "Save the file on the desktop.", tip: "电脑高频词", cat: "internet",
+    root: { parts: [{m:"desk",t:"root",cn:"桌子"},{m:"top",t:"root",cn:"顶部"}], logic: "desk + top → 桌面", family: "desktop, desk" }, memo: "desktop = 电脑桌面"},
+  { word: "desk", phonetic: "/desk/", cn: "书桌；办公桌", example: "The laptop is on the desk.", tip: "办公/生活词", cat: "life",
+    root: { parts: [{m:"desk",t:"root",cn:"桌子"}], logic: "desk = 桌子", family: "desk, desktop" }, memo: "desk = 书桌/办公桌"},
+  { word: "hour", phonetic: "/ˈaʊər/", cn: "小时", example: "It took me one hour.", tip: "时间词", cat: "time",
+    root: { parts: [{m:"hour",t:"root",cn:"小时"}], logic: "hour = 小时", family: "hour, hourly" }, memo: "hour = 小时，h 不发音"},
+  { word: "that", phonetic: "/ðæt/", cn: "那个；那；那样", example: "I think that is right.", tip: "高频代词/连词", cat: "det",
+    root: { parts: [{m:"that",t:"root",cn:"那个"}], logic: "that = 那个/那", family: "that" }, memo: "that = 那个/那"},
+  { word: "feed", phonetic: "/fiːd/", cn: "喂养；提供信息流", example: "Please feed the dog.", tip: "生活和互联网都常见", cat: "life",
+    root: { parts: [{m:"feed",t:"root",cn:"喂养、供给"}], logic: "feed = 喂养/供给", family: "feed, feedback" }, memo: "feed = 喂；信息流"},
+  { word: "course", phonetic: "/kɔːrs/", cn: "课程；过程；路线", example: "I took an English course.", tip: "学习高频词", cat: "study",
+    root: { parts: [{m:"course",t:"root",cn:"课程、路线"}], logic: "course = 学习路线 → 课程", family: "course, coursework" }, memo: "course = 课程"},
+  { word: "role", phonetic: "/roʊl/", cn: "角色；作用", example: "What is your role in the team?", tip: "职场高频词", cat: "work",
+    root: { parts: [{m:"role",t:"root",cn:"角色"}], logic: "role = 扮演的角色/作用", family: "role, roleplay" }, memo: "role = 角色/职责"},
+  { word: "color", phonetic: "/ˈkʌlər/", cn: "颜色；给…着色", example: "Choose a color you like.", tip: "界面和生活都常见", cat: "life",
+    root: { parts: [{m:"color",t:"root",cn:"颜色"}], logic: "color = 颜色", family: "color, colorful" }, memo: "color = 颜色"},
+  { word: "memory", phonetic: "/ˈmeməri/", cn: "记忆；内存", example: "This app uses too much memory.", tip: "学习和电脑都常见", cat: "internet",
+    root: { parts: [{m:"memor",t:"root",cn:"记忆"},{m:"-y",t:"suffix",cn:"名词后缀"}], logic: "memor + y → 记忆/内存", family: "memory, memorize" }, memo: "memory = 记忆；电脑内存"},
+  { word: "dictionary", phonetic: "/ˈdɪkʃəneri/", cn: "词典；字典", example: "Use a dictionary to check the word.", tip: "学习工具词", cat: "study",
+    root: { parts: [{m:"dict",t:"root",cn:"说、词"},{m:"-ionary",t:"suffix",cn:"工具/集合"}], logic: "dict + ionary → 收集词义的工具 → 字典", family: "dictionary, dictation" }, memo: "dictionary = 字典"},
+  { word: "failed", phonetic: "/feɪld/", cn: "失败了；未通过", example: "The download failed.", tip: "系统提示常见", cat: "internet",
+    root: { parts: [{m:"fail",t:"root",cn:"失败"},{m:"-ed",t:"suffix",cn:"过去/已…"}], logic: "fail + ed → 失败了", family: "fail, failed, failure" }, memo: "failed = 失败了"},
+  { word: "ctrl", phonetic: "/kənˈtroʊl/", cn: "Ctrl 键；控制", example: "Press Ctrl+C to copy.", tip: "快捷键常见", cat: "internet",
+    root: { parts: [{m:"control",t:"root",cn:"控制"}], logic: "ctrl = control 的缩写", family: "ctrl, control" }, memo: "ctrl = control 控制键"},
+  { word: "stock", phonetic: "/stɑːk/", cn: "库存；股票", example: "This product is out of stock.", tip: "电商和商业常见", cat: "work",
+    root: { parts: [{m:"stock",t:"root",cn:"储备、库存"}], logic: "stock = 储备/库存/股票", family: "stock, stockpile" }, memo: "stock = 库存/股票"},
+  { word: "products", phonetic: "/ˈprɑːdʌkts/", cn: "产品；商品（复数）", example: "Our products are popular.", tip: "产品页高频词", cat: "work",
+    root: { parts: [{m:"pro-",t:"prefix",cn:"向前"},{m:"duct",t:"root",cn:"带出、生产"},{m:"-s",t:"suffix",cn:"复数"}], logic: "products = 被生产出来的东西们", family: "product, products, production" }, memo: "products = 产品们"},
+  { word: "grok", phonetic: "/ɡrɑːk/", cn: "彻底理解；秒懂", example: "I finally grok this idea.", tip: "技术圈/AI产品常见", cat: "internet",
+    root: { parts: [{m:"grok",t:"root",cn:"深刻理解"}], logic: "grok = 深入理解", family: "grok" }, memo: "grok = 彻底搞懂"},
+  { word: "fast", phonetic: "/fæst/", cn: "快的；快速地", example: "This website is fast.", tip: "性能描述常见", cat: "adj",
+    root: { parts: [{m:"fast",t:"root",cn:"快"}], logic: "fast = 快", family: "fast, faster" }, memo: "fast = 快"},
+  { word: "smiles", phonetic: "/smaɪlz/", cn: "微笑；笑容（复数）", example: "Her smiles made me happy.", tip: "情绪表达", cat: "emotion",
+    root: { parts: [{m:"smile",t:"root",cn:"微笑"},{m:"-s",t:"suffix",cn:"复数"}], logic: "smile + s → 多个笑容", family: "smile, smiles" }, memo: "smiles = 笑容"},
+  { word: "enter into", phonetic: "/ˈentər ˈɪntuː/", cn: "进入；参与；开始", example: "Do not enter into the room without permission.", tip: "固定短语，整体记", cat: "prep",
+    root: { parts: [{m:"enter",t:"root",cn:"进入"},{m:"into",t:"compound",cn:"到里面"}], logic: "enter into = 进入到…里面；参与", family: "enter into" }, memo: "enter into = 进入/参与"},
+  { word: "entry", phonetic: "/ˈentri/", cn: "入口；条目；进入", example: "Click the entry to open it.", tip: "菜单、字典、系统里常见", cat: "internet",
+    root: { parts: [{m:"enter",t:"root",cn:"进入"},{m:"-y",t:"suffix",cn:"名词"}], logic: "entry = 进入的地方/条目", family: "entry, enter" }, memo: "entry = 入口/条目"},
+  { word: "title", phonetic: "/ˈtaɪtl/", cn: "标题；称号", example: "Enter a title for this page.", tip: "网页和文章常见", cat: "internet",
+    root: { parts: [{m:"title",t:"root",cn:"标题"}], logic: "title = 标题/称号", family: "title, subtitle" }, memo: "title = 标题"},
+  { word: "completed", phonetic: "/kəmˈpliːtɪd/", cn: "已完成的；完成了", example: "The task is completed.", tip: "任务状态常见", cat: "internet",
+    root: { parts: [{m:"com-",t:"prefix",cn:"完全"},{m:"plete",t:"root",cn:"填满、完成"},{m:"-ed",t:"suffix",cn:"已…"}], logic: "com + plete + ed → 已完全完成", family: "complete, completed, completion" }, memo: "completed = 已完成"},
+  { word: "took", phonetic: "/tʊk/", cn: "take 的过去式：拿了；花费了", example: "It took one hour.", tip: "不规则过去式", cat: "tense",
+    root: { parts: [{m:"take",t:"root",cn:"拿、花费"}], logic: "took = take 的过去式", family: "take, took" }, memo: "took = 拿了/花费了"},
+  { word: "speak", phonetic: "/spiːk/", cn: "说话；发言", example: "Please speak slowly.", tip: "沟通高频词", cat: "verb",
+    root: { parts: [{m:"speak",t:"root",cn:"说话"}], logic: "speak = 说话", family: "speak, speaker, speech" }, memo: "speak = 说话"},
+  { word: "more", phonetic: "/mɔːr/", cn: "更多的；更", example: "I need more time.", tip: "数量/程度高频词", cat: "adv",
+    root: { parts: [{m:"more",t:"root",cn:"更多"}], logic: "more = 更多/更", family: "more, moreover" }, memo: "more = 更多"},
+  { word: "consent", phonetic: "/kənˈsent/", cn: "同意；许可", example: "We need your consent.", tip: "隐私和授权常见", cat: "internet",
+    root: { parts: [{m:"con-",t:"prefix",cn:"一起"},{m:"sent",t:"root",cn:"感受、认可"}], logic: "con + sent → 一起认可 → 同意", family: "consent, consented" }, memo: "consent = 同意/许可"},
+  { word: "unless", phonetic: "/ənˈles/", cn: "除非；如果不", example: "You will be safe unless you pay strangers.", tip: "连接词，句子里很常见", cat: "sentence",
+    root: { parts: [{m:"unless",t:"link",cn:"除非"}], logic: "unless = 除非", family: "unless" }, memo: "unless = 除非"},
+  { word: "then", phonetic: "/ðen/", cn: "然后；那么", example: "Click save, then close the window.", tip: "顺序连接词", cat: "sentence",
+    root: { parts: [{m:"then",t:"link",cn:"然后"}], logic: "then = 然后/那么", family: "then" }, memo: "then = 然后"},
+  { word: "scammed", phonetic: "/skæmd/", cn: "被骗了", example: "He was scammed online.", tip: "网络安全高频词", cat: "internet",
+    root: { parts: [{m:"scam",t:"root",cn:"诈骗"},{m:"-ed",t:"suffix",cn:"被…/已…"}], logic: "scam + ed → 被诈骗/被骗", family: "scam, scammed, scammer" }, memo: "scammed = 被骗了"},
+
+  { word: "I", phonetic: "/aɪ/", cn: "我", example: "I am a student.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"I",t:"root",cn:"我"}], logic: "I = 我", family: "I, me" }, memo: "I = 我" },
+  { word: "you", phonetic: "/juː/", cn: "你；你们", usage: "人称代词，可作主语或宾语：you = 你，也可以表示你们。不是“你的/你们的”。例：You are my friend. = 你是我的朋友；I help you. = 我帮助你。", example: "You are my friend. / I help you.", tip: "主格/宾格都可用，单数是你，复数是你们", cat: "pronoun", root: { parts: [{m:"you",t:"root",cn:"你/你们"}], logic: "you = 你，也可以表示你们；看句子上下文判断", family: "you, your, yours" }, memo: "you = 你/你们，不表示‘你的’" },
+  { word: "your", phonetic: "/jʊr/", cn: "你的；你们的", usage: "形容词性物主代词，后面必须接名词：your book = 你的书 / 你们的书。your 不是“你们”，而是“你的/你们的”。", example: "Your book is here.", tip: "物主代词，后面通常接名词", cat: "pronoun", root: { parts: [{m:"your",t:"root",cn:"你的/你们的"}], logic: "your = you 的所有格，表示属于你或你们", family: "you, your, yours" }, memo: "your = 你的/你们的，后面接名词" },
+  { word: "yours", phonetic: "/jʊrz/", cn: "你的东西；你们的东西", usage: "名词性物主代词，后面不接名词：This book is yours. = 这本书是你的/你们的。", example: "This book is yours.", tip: "名词性物主代词，单独使用", cat: "pronoun", root: { parts: [{m:"your",t:"root",cn:"你的/你们的"},{m:"-s",t:"suffix",cn:"名词性物主代词"}], logic: "yours = your + s，表示属于你的东西", family: "you, your, yours" }, memo: "yours = 你的东西/你们的东西" },
+  { word: "yours", phonetic: "/jʊrz/", cn: "你的东西；你们的东西", example: "This book is yours.", tip: "名词性物主代词，后面不再接名词", cat: "pronoun", root: { parts: [{m:"yours",t:"root",cn:"你的东西/你们的东西"}], logic: "yours = your + s，代替 your + 名词", family: "you, your, yours" }, memo: "yours = 你的东西/你们的东西" },
+  { word: "he", phonetic: "/hiː/", cn: "他", example: "He is my friend.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"he",t:"root",cn:"他"}], logic: "he = 他", family: "he" }, memo: "he = 他" },
+  { word: "she", phonetic: "/ʃiː/", cn: "她", example: "She likes English.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"she",t:"root",cn:"她"}], logic: "she = 她", family: "she" }, memo: "she = 她" },
+  { word: "it", phonetic: "/ɪt/", cn: "它", example: "It is a book.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"it",t:"root",cn:"它"}], logic: "it = 它", family: "it" }, memo: "it = 它" },
+  { word: "we", phonetic: "/wiː/", cn: "我们", example: "We are ready.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"we",t:"root",cn:"我们"}], logic: "we = 我们", family: "we" }, memo: "we = 我们" },
+  { word: "they", phonetic: "/ðeɪ/", cn: "他们", example: "They are in the classroom.", tip: "人称代词", cat: "pronoun", root: { parts: [{m:"they",t:"root",cn:"他们"}], logic: "they = 他们", family: "they" }, memo: "they = 他们" },
+  { word: "me", phonetic: "/miː/", cn: "我；宾格", example: "Please help me.", tip: "宾格代词", cat: "pronoun", root: { parts: [{m:"me",t:"root",cn:"我（宾格）"}], logic: "me = 我（宾格）", family: "me" }, memo: "me = 我（宾格）" },
+  { word: "him", phonetic: "/hɪm/", cn: "他；宾格", example: "I saw him yesterday.", tip: "宾格代词", cat: "pronoun", root: { parts: [{m:"him",t:"root",cn:"他（宾格）"}], logic: "him = 他（宾格）", family: "him" }, memo: "him = 他（宾格）" },
+  { word: "her", phonetic: "/hɜːr/", cn: "她；宾格", example: "I called her this morning.", tip: "宾格代词", cat: "pronoun", root: { parts: [{m:"her",t:"root",cn:"她（宾格）"}], logic: "her = 她（宾格）", family: "her" }, memo: "her = 她（宾格）" },
+  { word: "us", phonetic: "/ʌs/", cn: "我们；宾格", example: "They helped us.", tip: "宾格代词", cat: "pronoun", root: { parts: [{m:"us",t:"root",cn:"我们（宾格）"}], logic: "us = 我们（宾格）", family: "us" }, memo: "us = 我们（宾格）" },
+  { word: "them", phonetic: "/ðem/", cn: "他们；宾格", example: "We saw them in the park.", tip: "宾格代词", cat: "pronoun", root: { parts: [{m:"them",t:"root",cn:"他们（宾格）"}], logic: "them = 他们（宾格）", family: "them" }, memo: "them = 他们（宾格）" },
+  { word: "am", phonetic: "/æm/", cn: "是；在", example: "I am a student.", tip: "be动词", cat: "be", root: { parts: [{m:"am",t:"root",cn:"是、在"}], logic: "am = 是/在", family: "am, is, are" }, memo: "am = 是/在" },
+  { word: "is", phonetic: "/ɪz/", cn: "是；在", example: "He is my friend.", tip: "be动词", cat: "be", root: { parts: [{m:"is",t:"root",cn:"是、在"}], logic: "is = 是/在", family: "am, is, are" }, memo: "is = 是/在" },
+  { word: "are", phonetic: "/ɑːr/", cn: "是；在", example: "They are in the classroom.", tip: "be动词", cat: "be", root: { parts: [{m:"are",t:"root",cn:"是、在"}], logic: "are = 是/在", family: "am, is, are" }, memo: "are = 是/在" },
+  { word: "was", phonetic: "/wʌz/", cn: "am / is 的过去式", example: "I was tired yesterday.", tip: "be动词过去式", cat: "be", root: { parts: [{m:"was",t:"root",cn:"是、在（过去）"}], logic: "was = am/is 的过去式", family: "was, were" }, memo: "was = am/is 的过去式" },
+  { word: "were", phonetic: "/wɜːr/", cn: "are 的过去式", example: "They were happy last night.", tip: "be动词过去式", cat: "be", root: { parts: [{m:"were",t:"root",cn:"是、在（过去）"}], logic: "were = are 的过去式", family: "was, were" }, memo: "were = are 的过去式" },
+  { word: "be", phonetic: "/biː/", cn: "是；成为", example: "Be kind.", tip: "be动词原形", cat: "be", root: { parts: [{m:"be",t:"root",cn:"是、成为"}], logic: "be = 是/成为", family: "be, being, been" }, memo: "be = 是/成为" },
+  { word: "been", phonetic: "/bɪn/", cn: "be 的过去分词", example: "I have been there.", tip: "be动词过去分词", cat: "be", root: { parts: [{m:"be",t:"root",cn:"是、成为"}], logic: "been = be 的过去分词", family: "be, been, being" }, memo: "been = be 的过去分词" },
+  { word: "being", phonetic: "/ˈbiːɪŋ/", cn: "正在是；存在", example: "Being kind is important.", tip: "be动词现在分词", cat: "be", root: { parts: [{m:"be",t:"root",cn:"是、成为"},{m:"-ing",t:"suffix",cn:"进行中"}], logic: "be + ing → 正在是/存在", family: "be, being, been" }, memo: "being = 正在是/存在" },
+  { word: "study", phonetic: "/ˈstʌdi/", cn: "学习", example: "She studies English carefully.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"study",t:"root",cn:"学习"}], logic: "study = 学习", family: "study, studied" }, memo: "study = 学习" },
+  { word: "like", phonetic: "/laɪk/", cn: "喜欢", example: "I like English.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"like",t:"root",cn:"喜欢"}], logic: "like = 喜欢", family: "like, liked" }, memo: "like = 喜欢" },
+  { word: "love", phonetic: "/lʌv/", cn: "爱；喜欢", example: "I love music.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"love",t:"root",cn:"爱、喜欢"}], logic: "love = 爱/喜欢", family: "love, loved" }, memo: "love = 爱/喜欢" },
+  { word: "play", phonetic: "/pleɪ/", cn: "玩；打球", example: "He plays basketball.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"play",t:"root",cn:"玩、打球"}], logic: "play = 玩/打球", family: "play, played" }, memo: "play = 玩" },
+  { word: "read", phonetic: "/riːd/", cn: "读", example: "I read a book every day.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"read",t:"root",cn:"读"}], logic: "read = 读", family: "read, reading" }, memo: "read = 读" },
+  { word: "watch", phonetic: "/wɑːtʃ/", cn: "看", example: "She watched TV last night.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"watch",t:"root",cn:"看、观看"}], logic: "watch = 看、观看", family: "watch, watched" }, memo: "watch = 看" },
+  { word: "see", phonetic: "/siː/", cn: "看见", example: "I saw a bird.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"see",t:"root",cn:"看见"}], logic: "see = 看见", family: "see, saw" }, memo: "see = 看见" },
+  { word: "look", phonetic: "/lʊk/", cn: "看", example: "Look at the blackboard.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"look",t:"root",cn:"看"}], logic: "look = 看", family: "look, looked" }, memo: "look = 看" },
+  { word: "listen", phonetic: "/ˈlɪsən/", cn: "听", example: "Listen carefully.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"listen",t:"root",cn:"听"}], logic: "listen = 听", family: "listen, listened" }, memo: "listen = 听" },
+  { word: "speak", phonetic: "/spiːk/", cn: "说", example: "Please speak clearly.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"speak",t:"root",cn:"说"}], logic: "speak = 说", family: "speak, speaker, speech" }, memo: "speak = 说" },
+  { word: "say", phonetic: "/seɪ/", cn: "说", example: "He said hello.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"say",t:"root",cn:"说"}], logic: "say = 说", family: "say, said" }, memo: "say = 说" },
+  { word: "write", phonetic: "/raɪt/", cn: "写", example: "Write your name here.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"write",t:"root",cn:"写"}], logic: "write = 写", family: "write, wrote" }, memo: "write = 写" },
+  { word: "eat", phonetic: "/iːt/", cn: "吃", example: "I eat an apple every day.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"eat",t:"root",cn:"吃"}], logic: "eat = 吃", family: "eat, ate" }, memo: "eat = 吃" },
+  { word: "drink", phonetic: "/drɪŋk/", cn: "喝", example: "Please drink some water.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"drink",t:"root",cn:"喝"}], logic: "drink = 喝", family: "drink, drank" }, memo: "drink = 喝" },
+  { word: "go", phonetic: "/ɡoʊ/", cn: "去", example: "I go to school by bus.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"go",t:"root",cn:"去"}], logic: "go = 去", family: "go, went" }, memo: "go = 去" },
+  { word: "come", phonetic: "/kʌm/", cn: "来", example: "Please come here.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"come",t:"root",cn:"来"}], logic: "come = 来", family: "come, came" }, memo: "come = 来" },
+  { word: "have", phonetic: "/hæv/", cn: "有；吃；喝", example: "I have breakfast at home.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"have",t:"root",cn:"有、吃、喝"}], logic: "have = 有/吃/喝", family: "have, had" }, memo: "have = 有/吃/喝" },
+  { word: "do", phonetic: "/duː/", cn: "做", example: "Do your homework.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"do",t:"root",cn:"做"}], logic: "do = 做", family: "do, did" }, memo: "do = 做" },
+  { word: "make", phonetic: "/meɪk/", cn: "制作；使", example: "Make a plan.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"make",t:"root",cn:"制作、使"}], logic: "make = 制作/使", family: "make, made" }, memo: "make = 制作/使" },
+  { word: "help", phonetic: "/help/", cn: "帮助", example: "Can you help me?", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"help",t:"root",cn:"帮助"}], logic: "help = 帮助", family: "help, helpful" }, memo: "help = 帮助" },
+  { word: "clean", phonetic: "/kliːn/", cn: "打扫；清洁", example: "Please clean your room.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"clean",t:"root",cn:"打扫、清洁"}], logic: "clean = 打扫/清洁", family: "clean, cleaned" }, memo: "clean = 打扫" },
+  { word: "work", phonetic: "/wɜːrk/", cn: "工作", example: "I work from Monday to Friday.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"work",t:"root",cn:"工作"}], logic: "work = 工作", family: "work, worked" }, memo: "work = 工作" },
+  { word: "live", phonetic: "/lɪv/", cn: "居住", example: "We live in Beijing.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"live",t:"root",cn:"居住"}], logic: "live = 居住", family: "live, lived" }, memo: "live = 居住" },
+  { word: "want", phonetic: "/wɑːnt/", cn: "想要", example: "I want a new book.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"want",t:"root",cn:"想要"}], logic: "want = 想要", family: "want, wanted" }, memo: "want = 想要" },
+  { word: "need", phonetic: "/niːd/", cn: "需要", example: "I need some water.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"need",t:"root",cn:"需要"}], logic: "need = 需要", family: "need, needed" }, memo: "need = 需要" },
+  { word: "know", phonetic: "/noʊ/", cn: "知道", example: "I know the answer.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"know",t:"root",cn:"知道"}], logic: "know = 知道", family: "know, known" }, memo: "know = 知道" },
+  { word: "think", phonetic: "/θɪŋk/", cn: "认为；想", example: "I think it's right.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"think",t:"root",cn:"认为、想"}], logic: "think = 认为/想", family: "think, thought" }, memo: "think = 想/认为" },
+  { word: "buy", phonetic: "/baɪ/", cn: "买", example: "Let's buy some milk.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"buy",t:"root",cn:"买"}], logic: "buy = 买", family: "buy, bought" }, memo: "buy = 买" },
+  { word: "take", phonetic: "/teɪk/", cn: "拿；带", example: "Take your book with you.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"take",t:"root",cn:"拿、带"}], logic: "take = 拿/带", family: "take, took" }, memo: "take = 拿/带" },
+  { word: "give", phonetic: "/ɡɪv/", cn: "给", example: "Give me a hand.", tip: "常见动作动词", cat: "verb", root: { parts: [{m:"give",t:"root",cn:"给"}], logic: "give = 给", family: "give, gave" }, memo: "give = 给" }
+];
+
+const ROOT_GLOSSARY = [
+  { morph: "re-", type: "prefix", mean: "再次、回、反", words: "retain, relevant, reluctant, react" },
+  { morph: "pre-/pro-", type: "prefix", mean: "向前、提前", words: "proactive, prompt, predict, provide" },
+  { morph: "con-/com-", type: "prefix", mean: "共同、一起、完全", words: "consistent, compromise, convey, concise" },
+  { morph: "dis-", type: "prefix", mean: "分开、否定、破坏", words: "disrupt, disagree, dismiss, disconnect" },
+  { morph: "sub-", type: "prefix", mean: "在下、次要、随后", words: "substantial, subscribe, submit, subordinate" },
+  { morph: "un-", type: "prefix", mean: "否定、取消", words: "unfollow, unlock, uncertain, unhappy" },
+  { morph: "over-", type: "prefix", mean: "过度、完全", words: "overwhelm, overflow, overwork, overlook" },
+  { morph: "anti-", type: "prefix", mean: "提前、在前、反对", words: "anticipate, antibiotic, antidote" },
+  { morph: "de-", type: "prefix", mean: "向下、离开、完全", words: "delegate, dedicate, decrease, depart" },
+  { morph: "rupt", type: "root", mean: "断裂、打破", words: "disrupt, interrupt, rupture, corrupt, abrupt" },
+  { morph: "tain", type: "root", mean: "握住、保持", words: "retain, maintain, contain, sustain, obtain" },
+  { morph: "sist/stat", type: "root", mean: "站立", words: "consistent, exist, resist, assist, substantial" },
+  { morph: "duct/duc", type: "root", mean: "引导、带领", words: "conduct, produce, reduce, introduce" },
+  { morph: "scrib/script", type: "root", mean: "写", words: "subscribe, describe, prescribe, manuscript" },
+  { morph: "vers", type: "root", mean: "转、变换", words: "versatile, convert, diverse, reverse, version" },
+  { morph: "flu", type: "root", mean: "流动", words: "influencer, fluent, fluid, influence, flush" },
+  { morph: "mit", type: "root", mean: "送、温和", words: "mitigate, permit, transmit, submit, admit" },
+  { morph: "cap/capt", type: "root", mean: "抓、取", words: "capture, caption, capacity, participate" },
+  { morph: "fac/feas/fic", type: "root", mean: "做", words: "feasible, efficient, sufficient, affect, defect" },
+  { morph: "line", type: "root", mean: "线、排列", words: "deadline, align, outline, streamline" },
+  { morph: "-ate", type: "suffix", mean: "动词/使成为", words: "negotiate, dedicate, anticipate, accommodate" },
+  { morph: "-tion/-sion", type: "suffix", mean: "名词（行为/状态）", words: "notification, engagement, decision, version" },
+  { morph: "-ive/-ative", type: "suffix", mean: "形容词（具有…性质）", words: "proactive, intuitive, creative, informative" },
+  { morph: "-able/-ible", type: "suffix", mean: "能够…的", words: "accountable, feasible, flexible, visible" },
+  { morph: "-er/-or", type: "suffix", mean: "做…的人/物", words: "influencer, lurker, teacher, computer" },
+  { morph: "enter into", type: "phrase", mean: "进入到里面；参与；开始", words: "enter into, enter into force, enter into a contract" },
+  { morph: "in front of", type: "phrase", mean: "在…前面", words: "in front of the desk, in front of the school" },
+  { morph: "because of", type: "phrase", mean: "因为", words: "because of the rain, because of the delay" },
+  { morph: "instead of", type: "phrase", mean: "代替；而不是", words: "instead of waiting, instead of using a mouse" },
+  { morph: "as well as", type: "phrase", mean: "也；以及", words: "study as well as work, design as well as code" },
+  { morph: "look into", type: "phrase", mean: "调查；研究", words: "look into the issue, look into the problem" },
+  { morph: "depend on", type: "phrase", mean: "依赖；取决于", words: "depend on the result, depend on you" },
+  { morph: "because", type: "link", mean: "因为", words: "because of, because we can" },
+  { morph: "unless", type: "link", mean: "除非；如果不", words: "unless you pay, unless it rains" },
+  { morph: "then", type: "link", mean: "然后；那么", words: "do this, then that" },
+];
+
+const CAT_LABEL = {
+  work: "职场",
+  internet: "网络",
+  life: "生活",
+  study: "学习",
+  emotion: "情绪",
+  travel: "出行",
+  pronoun: "人称代词",
+  be: "be动词",
+  verb: "动词",
+  tense: "过去式",
+  noun: "名词",
+  adj: "形容词",
+  adv: "副词",
+  time: "时间词",
+  place: "地点词",
+  prep: "介词",
+  det: "限定词",
+  question: "疑问词",
+  sentence: "句子"
+};
+const TYPE_LABEL = { prefix: "前缀", root: "词根", suffix: "后缀", compound: "合成", phrase: "短语", link: "连接词" };
+let currentFilter = "all";
+let sessionCorrect = 0;
+let sessionPracticed = 0;
+const practiceState = {};
+const CATEGORY_META = {
+  work: { label: "职场", description: "办公、沟通、学习、生活常用词" },
+  internet: { label: "网络", description: "网页、软件、账号、操作按钮常用词" },
+  life: { label: "生活", description: "日常表达和场景词" },
+  study: { label: "学习", description: "课堂、考试、知识相关词" },
+  emotion: { label: "情绪", description: "感受、态度、表达相关词" },
+  travel: { label: "出行", description: "位置、方向、交通相关词" },
+  pronoun: { label: "人称代词", description: "I / you / he / she 等代词" },
+  be: { label: "be动词", description: "am / is / are / was / were" },
+  verb: { label: "动词", description: "常见动作表达" },
+  tense: { label: "过去式", description: "常见动词过去式" },
+  noun: { label: "名词", description: "人、物、地点、事物名称" },
+  adj: { label: "形容词", description: "状态、性质词" },
+  adv: { label: "副词", description: "修饰动作方式和频率" },
+  time: { label: "时间词", description: "时间与顺序表达" },
+  place: { label: "地点词", description: "地点与位置表达" },
+  prep: { label: "介词", description: "表示位置、时间、关系" },
+  det: { label: "限定词", description: "冠词、指示代词、物主代词" },
+  question: { label: "疑问词", description: "提问与疑问表达" },
+  sentence: { label: "句子", description: "基础句型与例句" }
+};
+
+function getFilteredWords() {
+  if (currentFilter === "all") return words.map((w, i) => ({ ...w, idx: i }));
+  return words.map((w, i) => ({ ...w, idx: i })).filter(w => w.cat === currentFilter);
+}
+
+function buildFilterBar(containerId, onChange) {
+  const bar = document.getElementById(containerId);
+  const counts = { all: words.length };
+  Object.keys(CATEGORY_META).forEach(k => counts[k] = words.filter(w => w.cat === k).length);
+  const order = ["all", "pronoun", "be", "verb", "tense", "noun", "adj", "adv", "time", "place", "prep", "det", "question", "sentence", "work", "internet", "life", "study", "emotion", "travel"];
+  const labels = { all: "全部" };
+  Object.keys(CATEGORY_META).forEach(k => labels[k] = CATEGORY_META[k].label);
+  bar.innerHTML = order
+    .filter(key => key === "all" || counts[key] !== undefined)
+    .map(f => `<button class="filter-btn${currentFilter === f ? " active" : ""}" onclick="${onChange}('${f}')">${labels[f] || f} (${counts[f] || 0})</button>`).join("");
+}
+
+function catBadge(cat) {
+  return `<span class="badge-cat badge-${cat}">${(CATEGORY_META[cat] && CATEGORY_META[cat].label) || CAT_LABEL[cat] || cat}</span>`;
+}
+
+function speakWord(text) {
+  if (!window.speechSynthesis) return;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = 0.85;
+  utterance.pitch = 1;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utterance);
+}
+
+function usageHTML(w) {
+  return w.usage ? `<div class="usage-note"><strong>用法说明：</strong>${w.usage}</div>` : "";
+}
+
+function rootsHTML(w) {
+  if (!w.root) return "";
+  const chips = w.root.parts.map(p =>
+    `<span class="root-chip ${p.t}">${p.m} <small style="font-weight:400;opacity:0.75">${p.cn}</small></span>`
+  ).join("");
+  const memo = w.memo || w.root.logic;
+  return `<div class="roots-box">
+    <div class="roots-title">🧩 词根词缀拆解</div>
+    <div class="roots-chips">${chips}</div>
+    <div class="roots-logic"><strong>记忆口诀：</strong>${memo}</div>
+    ${w.root.family ? `<div class="roots-family"><span>同根词：</span>${w.root.family}</div>` : ""}
+  </div>`;
+}
+
+function updateStats() {
+  const filtered = getFilteredWords();
+  const doneInFilter = filtered.filter(w => practiceState[w.idx] === "correct").length;
+  const practicedInFilter = filtered.filter(w => practiceState[w.idx]).length;
+  const pct = filtered.length ? Math.round(doneInFilter / filtered.length * 100) : 0;
+  document.getElementById("correct-count").textContent = sessionCorrect;
+  document.getElementById("practiced-count").textContent = sessionPracticed;
+  document.getElementById("total-count").textContent = words.length;
+  document.getElementById("progress-bar").style.width = pct + "%";
+  document.getElementById("progress-pct").textContent = `${pct}%（${doneInFilter}/${filtered.length}）`;
+  document.getElementById("sb-correct").textContent = sessionCorrect;
+  document.getElementById("sb-pct").textContent = `${pct}%`;
+  document.getElementById("sb-progress").style.width = pct + "%";
+}
+
+function setPracticeFilter(f) { currentFilter = f; buildFilterBar("practice-filter", "setPracticeFilter"); buildPractice(); }
+
+function buildPractice() {
+  const container = document.getElementById("practice-list");
+  const filtered = getFilteredWords();
+  container.innerHTML = "";
+  if (!filtered.length) { container.innerHTML = `<div class="empty-hint">该分类暂无词汇</div>`; updateStats(); return; }
+  filtered.forEach((w, fi) => {
+    const i = w.idx;
+    const done = practiceState[i] === "correct";
+    const card = document.createElement("div");
+    card.className = `card cat-${w.cat}` + (done ? " done" : "");
+    card.id = "card-" + i;
+    card.style.animationDelay = (fi * 0.03) + "s";
+    card.innerHTML = `
+      <div class="word-header">
+        <span class="word-en">${done ? `${w.word} <span style="font-size:0.72em;color:var(--ink-muted);font-family:inherit">(${w.cn})</span>` : `_____ <small style="font-size:0.7em;color:var(--ink-muted);font-family:inherit">(点击“显示答案”可看英文+中文)</small>`}</span>
+        <span class="phonetic">${w.phonetic}</span>
+        <button class="check-btn" style="padding:6px 10px;font-size:0.8rem" onclick="speakWord('${w.word}')">🔊 发音</button>
+        ${catBadge(w.cat)}
+        <span class="badge ${done ? "badge-done" : "badge-todo"}" id="badge-${i}">${done ? "已掌握" : "待练习"}</span>
+      </div>
+      <div class="word-cn">${w.cn}</div>
+      ${usageHTML(w)}
+      ${rootsHTML(w)}
+      <div class="example">${w.example}</div>
+      <div class="tip">${w.tip}</div>
+      <div class="input-area">
+        <input class="spell-input" id="input-${i}" placeholder="先根据提示拼写，再点验证" autocomplete="off" spellcheck="false" ${done ? "disabled" : ""} onkeydown="if(event.key==='Enter')checkSpell(${i})">
+        <button class="check-btn primary" onclick="checkSpell(${i})" ${done ? "disabled" : ""}>验证</button>
+        <button class="check-btn" onclick="revealWord(${i})">显示答案</button>
+      </div>
+      <div class="feedback" id="fb-${i}">${done ? `已掌握：${w.word} — ${w.cn}` : "先看音标、中文和词根提示"}</div>`;
+    container.appendChild(card);
+  });
+  updateStats();
+}
+
+function checkSpell(i) {
+  const input = document.getElementById("input-" + i);
+  const fb = document.getElementById("fb-" + i);
+  const val = input.value.trim().toLowerCase();
+  if (!val) return;
+  if (val === words[i].word.toLowerCase()) {
+    input.className = "spell-input correct";
+    fb.className = "feedback ok";
+    fb.textContent = "✓ 正确！";
+    if (practiceState[i] !== "correct") {
+      practiceState[i] = "correct";
+      sessionCorrect++;
+      sessionPracticed++;
+      document.getElementById("badge-" + i).className = "badge badge-done";
+      document.getElementById("badge-" + i).textContent = "已掌握";
+      document.getElementById("card-" + i)?.classList.add("done");
+    }
+  } else {
+    input.className = "spell-input wrong";
+    fb.className = "feedback no";
+    fb.textContent = "拼写有误，再试试！";
+    if (practiceState[i] !== "correct" && !practiceState[i]) { practiceState[i] = "tried"; sessionPracticed++; }
+  }
+  updateStats();
+}
+
+function revealWord(i) {
+  const input = document.getElementById("input-" + i);
+  const fb = document.getElementById("fb-" + i);
+  input.value = words[i].word;
+  input.className = "spell-input";
+  fb.className = "feedback ok";
+  fb.textContent = `${words[i].word} — ${words[i].cn}`;
+}
+
+function setReviewFilter(f) { currentFilter = f; buildFilterBar("review-filter", "setReviewFilter"); buildReview(); }
+
+function buildReview() {
+  const container = document.getElementById("review-list");
+  const filtered = getFilteredWords();
+  container.innerHTML = `<div class="section-title">全部词汇（${filtered.length} 个）</div>`;
+  filtered.forEach((w, fi) => {
+    const card = document.createElement("div");
+    card.className = `card cat-${w.cat}`;
+    card.style.animationDelay = (fi * 0.02) + "s";
+    card.innerHTML = `
+      <div class="word-header">
+        <span class="word-en">${w.word}</span>
+        <span class="phonetic">${w.phonetic}</span>
+        <button class="check-btn" style="padding:6px 10px;font-size:0.8rem" onclick="speakWord('${w.word}')">🔊 发音</button>
+        ${catBadge(w.cat)}
+      </div>
+      <div class="word-cn">${w.cn}</div>
+      ${rootsHTML(w)}
+      <div class="example">${w.example}</div>
+      <div class="tip">${w.tip}</div>`;
+    container.appendChild(card);
+  });
+}
+
+function buildRootsGlossary() {
+  const grid = document.getElementById("roots-grid");
+  grid.innerHTML = ROOT_GLOSSARY.map((r, i) => `
+    <div class="root-card" style="animation-delay:${i * 0.02}s">
+      <div class="root-card-head">
+        <span class="root-card-morph">${r.morph}</span>
+        <span class="root-card-type type-${r.type}">${TYPE_LABEL[r.type] || r.type}</span>
+      </div>
+      <div class="root-card-mean">${r.mean}</div>
+      <div class="root-card-words"><b>例词：</b>${r.words}</div>
+    </div>`).join("");
+}
+
+let quizCorrect = 0, quizTotal = 0, quizAnswer = "";
+
+function buildQuiz() { nextQuiz(); }
+
+function nextQuiz() {
+  const sec = document.getElementById("quiz-section");
+  const pool = currentFilter === "all" ? words : words.filter(w => w.cat === currentFilter);
+  const w = pool[Math.floor(Math.random() * pool.length)];
+  quizAnswer = w.word;
+  sec.innerHTML = `
+    <div class="stats-row" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-label">本次正确</div><div class="stat-value coral">${quizCorrect}</div></div>
+      <div class="stat-card"><div class="stat-label">已测题数</div><div class="stat-value">${quizTotal}</div></div>
+      <div class="stat-card"><div class="stat-label">正确率</div><div class="stat-value">${quizTotal ? Math.round(quizCorrect/quizTotal*100)+"%" : "—"}</div></div>
+    </div>
+    <div class="card quiz-card cat-${w.cat}">
+      <div style="margin-bottom:8px">${catBadge(w.cat)}</div>
+      <div class="word-cn">${w.cn}</div>
+      <div class="phonetic" style="margin-bottom:8px">${w.phonetic}</div>
+      ${rootsHTML(w)}
+      <div class="example" style="margin-bottom:14px">${w.example}</div>
+      <div class="input-area">
+        <input class="spell-input" id="qz-input" placeholder="根据提示拼写英文单词…" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')checkQuiz()">
+        <button class="check-btn primary" onclick="checkQuiz()">验证</button>
+      </div>
+      <div class="feedback" id="qz-fb"></div>
+      <div style="margin-top:14px"><button class="check-btn" onclick="nextQuiz()">换一题 →</button></div>
+    </div>`;
+  setTimeout(() => document.getElementById("qz-input")?.focus(), 50);
+}
+
+function checkQuiz() {
+  const input = document.getElementById("qz-input");
+  const fb = document.getElementById("qz-fb");
+  const val = input.value.trim().toLowerCase();
+  if (!val) return;
+  quizTotal++;
+  if (val === quizAnswer.toLowerCase()) {
+    input.className = "spell-input correct";
+    fb.className = "feedback ok";
+    fb.textContent = "✓ 正确！2 秒后下一题…";
+    quizCorrect++;
+    setTimeout(nextQuiz, 2200);
+  } else {
+    input.className = "spell-input wrong";
+    fb.className = "feedback no";
+    fb.textContent = "正确答案：" + quizAnswer;
+    setTimeout(nextQuiz, 2500);
+  }
+}
+
+function switchTab(tab) {
+  ["practice","review","roots","quiz"].forEach(t => {
+    document.getElementById("tab-" + t).classList.toggle("hidden", t !== tab);
+    document.querySelectorAll(".nav-item").forEach((el, i) => {
+      el.classList.toggle("active", ["practice","review","roots","quiz"][i] === tab);
+    });
+  });
+  if (tab === "review") { buildFilterBar("review-filter", "setReviewFilter"); buildReview(); }
+  if (tab === "roots") buildRootsGlossary();
+  if (tab === "quiz") buildQuiz();
+  document.querySelector(".main").scrollTo({ top: 0, behavior: "smooth" });
+}
+
+const mainEl = document.querySelector(".main");
+const backTopBtn = document.getElementById("back-top");
+function updateBackTop() {
+  backTopBtn.classList.toggle("show", mainEl.scrollTop > 400 || window.scrollY > 400);
+}
+mainEl.addEventListener("scroll", updateBackTop);
+window.addEventListener("scroll", updateBackTop);
+backTopBtn.addEventListener("click", () => {
+  if (mainEl.scrollTop > 0) mainEl.scrollTo({ top: 0, behavior: "smooth" });
+  else window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+buildFilterBar("practice-filter", "setPracticeFilter");
+buildPractice();
+</script>
+</body>
+</html>
