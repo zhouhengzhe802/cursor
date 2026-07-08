@@ -8,28 +8,28 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --cream: #faf6f0;
-    --paper: #fffdf8;
-    --sidebar: #2c2420;
-    --sidebar-hover: #3d332e;
-    --ink: #2c2420;
-    --ink-soft: #5c534c;
-    --ink-muted: #9a8f86;
-    --coral: #d4623a;
-    --coral-soft: #fdf0eb;
-    --sage: #4a7c6f;
-    --sage-soft: #e8f2ef;
-    --amber: #c9952a;
-    --amber-soft: #faf3e3;
-    --teal: #3d8b7a;
-    --red: #c44d4d;
-    --red-soft: #fdf0f0;
-    --green: #3d8b5a;
-    --green-soft: #eaf5ee;
-    --border: rgba(44,36,32,0.1);
-    --shadow: 0 4px 24px rgba(44,36,32,0.08);
-    --radius: 14px;
-    --content-max: 820px;
+    --cream: #f5f7fb;
+    --paper: #ffffff;
+    --sidebar: #172033;
+    --sidebar-hover: rgba(255,255,255,0.08);
+    --ink: #1f2937;
+    --ink-soft: #526071;
+    --ink-muted: #8a96a8;
+    --coral: #2f8cff;
+    --coral-soft: #eaf4ff;
+    --sage: #13a982;
+    --sage-soft: #e9f8f4;
+    --amber: #f59e0b;
+    --amber-soft: #fff7e6;
+    --teal: #14b8c6;
+    --red: #ef4444;
+    --red-soft: #fff1f1;
+    --green: #16a34a;
+    --green-soft: #ecfdf3;
+    --border: rgba(31,41,55,0.09);
+    --shadow: 0 14px 38px rgba(23,32,51,0.08);
+    --radius: 18px;
+    --content-max: 1080px;
     --lh: 1.7;
   }
 
@@ -37,51 +37,19 @@
 
   body {
     font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
-    background:
-      radial-gradient(circle at top left, rgba(212,98,58,0.14), transparent 30%),
-      radial-gradient(circle at 85% 12%, rgba(61,139,122,0.12), transparent 28%),
-      linear-gradient(180deg, #fffaf6 0%, #f6ede2 100%);
+    background: radial-gradient(circle at top left, #eaf4ff 0, transparent 34%), linear-gradient(135deg, #f7f9fd 0%, #eef3fb 100%);
     min-height: 100vh;
     color: var(--ink);
     display: flex;
     line-height: var(--lh);
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 1;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at 16% 14%, rgba(255,255,255,0.62), transparent 18%),
-      radial-gradient(circle at 84% 6%, rgba(255,255,255,0.28), transparent 14%),
-      linear-gradient(transparent 0 0);
-    z-index: 0;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(rgba(44,36,32,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(44,36,32,0.03) 1px, transparent 1px);
-    background-size: 36px 36px;
-    mask-image: linear-gradient(180deg, rgba(0,0,0,0.26), transparent 72%);
-    opacity: 0.55;
-    z-index: 0;
   }
 
   /* —— 侧边栏 —— */
   .sidebar {
-    width: 250px;
+    width: 240px;
     min-height: 100vh;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 30%),
-      linear-gradient(180deg, rgba(35,29,26,0.98), rgba(17,14,12,0.98));
+    background: var(--sidebar);
     color: #e8e0d8;
     display: flex;
     flex-direction: column;
@@ -90,44 +58,38 @@
     top: 0;
     height: 100vh;
     overflow-y: auto;
-    box-shadow: 12px 0 40px rgba(44,36,32,0.22);
-    z-index: 2;
-    border-right: 1px solid rgba(255,255,255,0.06);
   }
   .sidebar-brand {
-    padding: 28px 22px 20px;
+    padding: 30px 22px 22px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
   }
   .brand-icon {
     width: 48px; height: 48px;
-    background: linear-gradient(135deg, #ff9b5b, #f4c35c 55%, #79c0a9);
-    border-radius: 14px;
+    background: linear-gradient(135deg, #2f8cff, #14b8c6);
+    border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
     font-size: 23px;
     margin-bottom: 12px;
-    box-shadow: 0 10px 24px rgba(212,98,58,0.28);
+    box-shadow: 0 12px 26px rgba(47,140,255,0.32);
   }
-  .brand-title { font-size: 1.18rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-  .brand-sub { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-top: 5px; line-height: 1.45; }
+  .brand-title { font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+  .brand-sub { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 5px; line-height: 1.45; }
 
   .nav { padding: 18px 14px; flex: 1; }
   .nav-item {
     display: flex; align-items: center; gap: 10px;
     width: 100%; padding: 11px 14px;
-    border: 1px solid transparent; border-radius: 12px;
-    background: transparent; color: rgba(255,255,255,0.62);
+    border: none; border-radius: 10px;
+    background: transparent; color: rgba(255,255,255,0.55);
     font-size: 0.92rem; font-weight: 500; font-family: inherit;
     cursor: pointer; text-align: left;
-    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-    margin-bottom: 5px;
-    backdrop-filter: blur(6px);
+    transition: all 0.15s; margin-bottom: 5px;
   }
-  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; transform: translateX(3px); border-color: rgba(255,255,255,0.08); }
+  .nav-item:hover { background: var(--sidebar-hover); color: #fff; }
   .nav-item.active {
-    background: linear-gradient(135deg, var(--coral), #b85530);
+    background: linear-gradient(135deg, #2f8cff, #14b8c6);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(212,98,58,0.4);
+    box-shadow: 0 10px 24px rgba(47,140,255,0.28);
   }
   .nav-icon { font-size: 1rem; width: 22px; text-align: center; }
 
@@ -141,81 +103,42 @@
   .s-stat-value.coral { color: var(--coral); }
   .sidebar-progress { margin-top: 4px; }
   .s-prog-bg { height: 5px; background: rgba(255,255,255,0.12); border-radius: 5px; margin-top: 8px; }
-  .s-prog-fg { height: 100%; background: linear-gradient(90deg, var(--coral), var(--amber)); border-radius: 5px; transition: width 0.4s; }
+  .s-prog-fg { height: 100%; background: linear-gradient(90deg, #2f8cff, #14b8c6); border-radius: 5px; transition: width 0.4s; }
 
   /* —— 主内容区 —— */
   .main {
     flex: 1;
     min-width: 0;
     height: 100vh;
-    padding: 28px 32px 48px;
+    padding: 36px 40px 56px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    z-index: 1;
-    background: linear-gradient(180deg, rgba(255,251,245,0.72), rgba(247,239,229,0.92));
-    border-left: 1px solid rgba(44,36,32,0.06);
-    backdrop-filter: blur(10px);
-  }
-  .main::before {
-    content: '';
-    position: sticky;
-    top: 0;
-    align-self: flex-start;
-    width: 100%;
-    height: 18px;
-    margin-bottom: -18px;
-    background: linear-gradient(180deg, rgba(245,238,229,0.96), rgba(245,238,229,0));
-    pointer-events: none;
-    z-index: 2;
   }
   .main > div { width: 100%; max-width: var(--content-max); }
-  .main > div:not(:first-child) { margin-top: 10px; }
-  .main-header {
-    margin-bottom: 22px;
-    padding: 20px 22px;
-    border: 1px solid rgba(44,36,32,0.06);
-    border-radius: 18px;
-    background: rgba(255,253,248,0.82);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 22px rgba(44,36,32,0.04);
-  }
-  .main-title { font-size: 1.62rem; font-weight: 800; color: var(--red); margin-bottom: 6px; letter-spacing: -0.3px; }
-  .main-desc { font-size: 0.96rem; color: var(--ink-muted); line-height: 1.6; max-width: 58ch; }
+  .main-header { margin-bottom: 26px; }
+  .main-title { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.2px; }
+  .main-desc { font-size: 0.95rem; color: var(--ink-muted); line-height: 1.55; }
 
-  .filter-bar {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 22px;
-    padding: 12px 12px 4px;
-    border-radius: 16px;
-    background: rgba(255,253,248,0.66);
-    border: 1px solid rgba(44,36,32,0.05);
-  }
+  .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
   .filter-btn {
-    padding: 8px 16px; font-size: 0.88rem; font-family: inherit;
-    border: 1px solid rgba(44,36,32,0.08); border-radius: 20px;
-    background: rgba(255,253,248,0.94); color: var(--ink-soft);
-    cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    box-shadow: 0 3px 12px rgba(44,36,32,0.03);
+    padding: 8px 18px; font-size: 0.88rem; font-family: inherit;
+    border: 1.5px solid rgba(255,255,255,0.8); border-radius: 999px;
+    background: rgba(255,255,255,0.82); color: var(--ink-soft);
+    cursor: pointer; transition: all 0.15s; box-shadow: 0 6px 18px rgba(23,32,51,0.05);
   }
-  .filter-btn:hover { border-color: var(--coral); color: var(--coral); transform: translateY(-1px); }
-  .filter-btn.active { background: linear-gradient(135deg, var(--coral), #b85530); border-color: var(--coral); color: #fff; box-shadow: 0 6px 14px rgba(212,98,58,0.18); }
+  .filter-btn:hover { border-color: rgba(47,140,255,0.36); color: var(--coral); transform: translateY(-1px); }
+  .filter-btn.active { background: linear-gradient(135deg, #2f8cff, #14b8c6); border-color: transparent; color: #fff; box-shadow: 0 10px 24px rgba(47,140,255,0.22); }
 
   .stats-row {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 14px; margin-bottom: 20px;
-    perspective: 1000px;
+    gap: 14px; margin-bottom: 22px;
   }
   .stat-card {
-    background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,255,255,0.9));
-    border-radius: 16px;
-    padding: 16px 18px; border: 1px solid rgba(44,36,32,0.06);
-    box-shadow: 0 8px 20px rgba(44,36,32,0.05);
-    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.86); border-radius: var(--radius);
+    padding: 18px 20px; border: 1px solid rgba(255,255,255,0.72);
+    box-shadow: var(--shadow); backdrop-filter: blur(10px);
   }
   .stat-label { font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 6px; font-weight: 500; }
   .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--ink); }
@@ -235,18 +158,18 @@
 
   /* —— 单词卡片 —— */
   .card {
-    background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,255,255,0.94));
-    border-radius: 18px;
-    border: 1px solid rgba(44,36,32,0.06);
-    padding: 22px 24px;
-    margin-bottom: 14px;
-    box-shadow: 0 8px 22px rgba(44,36,32,0.06);
-    transition: box-shadow 0.2s, transform 0.2s;
+    background: rgba(255,255,255,0.9);
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.76);
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    transition: transform 0.18s, box-shadow 0.18s;
     animation: fadeUp 0.3s ease both;
     border-left: 4px solid transparent;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
   }
-  .card:hover { box-shadow: 0 14px 30px rgba(44,36,32,0.1); transform: translateY(-1px); }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 18px 44px rgba(23,32,51,0.12); }
   .card.done { border-left-color: var(--green); }
   .card.cat-work { border-left-color: var(--coral); }
   .card.cat-internet { border-left-color: var(--teal); }
@@ -270,10 +193,10 @@
 
   /* 词根词缀区 */
   .roots-box {
-    background: linear-gradient(180deg, rgba(250,243,227,0.94), rgba(255,249,236,0.9));
-    border: 1px solid rgba(201,149,42,0.14);
-    border-radius: 12px;
-    padding: 12px 14px;
+    background: var(--amber-soft);
+    border: 1px solid rgba(201,149,42,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
     margin-bottom: 12px;
   }
   .roots-title {
@@ -297,13 +220,59 @@
   .roots-family { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.5; }
   .roots-family span { color: var(--sage); font-weight: 600; }
 
-  .tip {
-    font-size: 0.9rem; color: #5a4a2a;
-    background: var(--coral-soft); border-radius: 10px;
-    padding: 10px 14px; margin-bottom: 16px; line-height: var(--lh);
-    border-left: 4px solid var(--coral);
-  }
-  .tip::before { content: '💡 联想：'; font-weight: 600; }
+  .dict-entry { margin-top: 10px; background: #f4f6fb; border-radius: 22px; padding: 12px; color: #34345f; }
+  .learn-card { display: grid; grid-template-columns: minmax(240px, 0.9fr) minmax(280px, 1.1fr); gap: 14px; }
+  .learn-left, .learn-right { background: #fff; border-radius: 20px; padding: 20px; min-width: 0; }
+  .learn-left { text-align: center; }
+  .learn-word { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900; letter-spacing: 1px; line-height: 1; margin: 4px 0 14px; word-break: break-word; }
+  .learn-word span:nth-child(6n+1), .phonics-unit .letter { color: #2e9bff; }
+  .learn-word span:nth-child(6n+2) { color: #ff5757; }
+  .learn-word span:nth-child(6n+3) { color: #2e9bff; }
+  .learn-word span:nth-child(6n+4) { color: #ff5757; }
+  .learn-word span:nth-child(6n+5) { color: #2e9bff; }
+  .learn-word span:nth-child(6n+6) { color: #9b9b9b; }
+  .syllables { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .syllable-pill { background: #f4f8ff; color: #16a8ff; border-radius: 8px; padding: 4px 12px; font-weight: 800; }
+  .learn-phonetic { color: #62709a; font-size: 1rem; margin-bottom: 12px; }
+  .sound { display: inline-flex; align-items: center; justify-content: center; background: #eaf7ff; color: #12a8ff; border: 0; border-radius: 8px; padding: 3px 9px; margin-left: 6px; cursor: pointer; font-family: inherit; font-weight: 700; }
+  .sound:hover { background: #d9f1ff; }
+  .learn-meaning { color: #5c5f8c; font-size: 1.05rem; margin-bottom: 18px; }
+  .phonics-grid { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 14px 0 6px; }
+  .phonics-unit { min-width: 42px; overflow: hidden; border-radius: 8px; background: #eef0f6; }
+  .phonics-unit .letter { display: block; background: #f8f9fc; padding: 7px 9px 4px; font-weight: 800; }
+  .phonics-unit .sound-text { display: block; padding: 4px 9px 7px; color: #69708f; font-weight: 700; border-top: 1px solid #dde1eb; }
+  .learn-panel-title { display: inline-flex; align-items: center; gap: 8px; color: #06a9ff; font-size: 1rem; font-weight: 800; background: #eef8ff; border-radius: 18px; padding: 7px 14px; margin-bottom: 16px; }
+  .learn-section { border-top: 1px solid #edf0f7; padding-top: 14px; margin-top: 14px; }
+  .learn-section:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+  .learn-label { color: #8b95b0; font-size: 0.82rem; font-weight: 800; margin-bottom: 6px; }
+  .learn-sentence { font-size: 1.14rem; font-weight: 800; color: #34345f; line-height: 1.55; margin-bottom: 4px; }
+  .learn-highlight { color: #13afff; }
+  .learn-cn { color: #6e7394; margin-bottom: 0; }
+  .learn-family { color: #5c5f8c; line-height: 1.6; }
+  .learn-family b { color: #34345f; }
+  .learn-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .learn-tag { border-radius: 14px; background: #f1f2f7; color: #68708c; padding: 5px 10px; font-size: 0.82rem; }
+  @media (max-width: 760px) { .learn-card { grid-template-columns: 1fr; } .learn-left, .learn-right { padding: 16px; } }
+
+  .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .toolbar-note { color: var(--ink-muted); font-size: 0.9rem; }
+  .word-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 12px; }
+  .mini-btn { border: 1px solid var(--border); background: #fff; border-radius: 999px; padding: 7px 13px; font-size: 0.84rem; color: var(--ink-soft); cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .mini-btn:hover { transform: translateY(-1px); border-color: var(--coral); color: var(--coral); background: var(--coral-soft); }
+  .mini-btn.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.42); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; backdrop-filter: blur(8px); }
+  .modal { width: min(720px, 100%); max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 24px; box-shadow: 0 30px 80px rgba(15,23,42,0.28); padding: 24px; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .modal-title { font-size: 1.25rem; font-weight: 800; }
+  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label { font-size: 0.84rem; color: var(--ink-soft); font-weight: 700; }
+  .form-field input, .form-field select, .form-field textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 13px; padding: 11px 13px; font-size: 0.95rem; font-family: inherit; color: var(--ink); outline: none; background: #f9fbff; }
+  .form-field textarea { min-height: 80px; resize: vertical; }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(47,140,255,0.12); background: #fff; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+  @media (max-width: 680px) { .form-grid { grid-template-columns: 1fr; } }
 
   .input-area { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
   .spell-input {
@@ -317,14 +286,14 @@
   .spell-input.wrong { border-color: var(--red); background: var(--red-soft); color: var(--red); }
 
   .check-btn {
-    padding: 11px 18px; border-radius: 10px;
-    border: 1px solid rgba(44,36,32,0.08); background: rgba(255,255,255,0.96);
+    padding: 12px 20px; border-radius: 10px;
+    border: 1.5px solid var(--border); background: #fff;
     font-size: 0.92rem; font-weight: 500; cursor: pointer;
     font-family: inherit; white-space: nowrap; color: var(--ink-soft);
-    transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    transition: all 0.15s;
   }
-  .check-btn:hover { border-color: var(--coral); color: var(--coral); background: var(--coral-soft); transform: translateY(-1px); }
-  .check-btn.primary { background: var(--coral); border-color: var(--coral); color: #fff; box-shadow: 0 6px 14px rgba(212,98,58,0.14); }
+  .check-btn:hover { border-color: var(--coral); color: var(--coral); background: var(--coral-soft); }
+  .check-btn.primary { background: var(--coral); border-color: var(--coral); color: #fff; }
   .check-btn.primary:hover { background: #b85530; }
   .check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
@@ -443,7 +412,10 @@
       <div class="main-title">拼写练习</div>
       <div class="main-desc">主动回忆模式：只看中文和短语填空，先自己写英文，再看答案和词根解释</div>
     </div>
-    <div class="filter-bar" id="practice-filter"></div>
+    <div class="toolbar">
+      <div class="filter-bar" id="practice-filter"></div>
+      <button class="check-btn primary" onclick="openWordModal()">添加单词</button>
+    </div>
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">今日正确</div><div class="stat-value coral" id="correct-count">0</div></div>
       <div class="stat-card"><div class="stat-label">已练习</div><div class="stat-value" id="practiced-count">0</div></div>
@@ -460,9 +432,12 @@
   <div id="tab-review" class="hidden">
     <div class="main-header">
       <div class="main-title">全部词汇</div>
-      <div class="main-desc">浏览词根拆解，建立词汇家族联想</div>
+      <div class="main-desc">浏览词根拆解，用例句理解并记住每个单词</div>
     </div>
-    <div class="filter-bar" id="review-filter"></div>
+    <div class="toolbar">
+      <div class="filter-bar" id="review-filter"></div>
+      <button class="check-btn primary" onclick="openWordModal()">添加单词</button>
+    </div>
     <div id="review-list"></div>
   </div>
 
@@ -500,9 +475,10 @@
 </main>
 
 <button class="back-top" id="back-top" title="回到顶部">↑</button>
+<div id="word-modal-root"></div>
 
 <script>
-const words = [
+let words = [
   { word: "important", phonetic: "/ɪmˈpɔːrtnt/", cn: "重要的", example: "This is the most important thing to remember.", tip: "最常用的高频形容词之一", cat: "work",
     memo: "im + port → 被放在前面、被重视 → important 重要的", root: { parts: [{m:"im-",t:"prefix",cn:"加强"},{m:"port",t:"root",cn:"拿、带"},{m:"-ant",t:"suffix",cn:"形容词后缀"}], logic: "im + port → 被看重、被带在前面 → 重要的", family: "important, import, support" }},
   { word: "technology", phonetic: "/tekˈnɑːlədʒi/", cn: "技术；科技", example: "Technology changes the way we work.", tip: "科技相关高频词", cat: "internet",
@@ -1177,6 +1153,9 @@ const CAT_LABEL = {
   sentence: "句子"
 };
 const TYPE_LABEL = { prefix: "前缀", root: "词根", suffix: "后缀", compound: "合成", phrase: "短语", link: "连接词" };
+const DEFAULT_WORDS = words.map(w => JSON.parse(JSON.stringify(w)));
+const CUSTOM_WORDS_KEY = "english-book-words-v2";
+let editingWordIndex = null;
 let currentFilter = "all";
 let sessionCorrect = 0;
 let sessionPracticed = 0;
@@ -1202,6 +1181,28 @@ const CATEGORY_META = {
   question: { label: "疑问词", description: "提问与疑问表达" },
   sentence: { label: "句子", description: "基础句型与例句" }
 };
+
+function loadCustomWords() {
+  try {
+    const savedWords = JSON.parse(localStorage.getItem(CUSTOM_WORDS_KEY) || "null");
+    words = Array.isArray(savedWords) && savedWords.length ? savedWords : [...DEFAULT_WORDS];
+  } catch {
+    words = [...DEFAULT_WORDS];
+  }
+}
+
+function saveCustomWords() {
+  localStorage.setItem(CUSTOM_WORDS_KEY, JSON.stringify(words));
+}
+
+function refreshCurrentViews() {
+  buildFilterBar("practice-filter", "setPracticeFilter");
+  buildPractice();
+  if (!document.getElementById("tab-review").classList.contains("hidden")) {
+    buildFilterBar("review-filter", "setReviewFilter");
+    buildReview();
+  }
+}
 
 function getFilteredWords() {
   if (currentFilter === "all") return words.map((w, i) => ({ ...w, idx: i }));
@@ -1234,6 +1235,29 @@ function speakWord(text) {
   window.speechSynthesis.speak(utterance);
 }
 
+function normalizeWord(word) {
+  const safeWord = word.word.trim();
+  const rootPartsText = (word.rootParts || "").trim();
+  const family = (word.family || "").trim() || safeWord;
+  const logic = (word.logic || word.memo || word.cn || "").trim();
+  const parts = rootPartsText
+    ? rootPartsText.split(",").map(item => item.trim()).filter(Boolean).map(item => {
+        const [m, cn = item] = item.split(":").map(s => s.trim());
+        return { m, t: "root", cn };
+      })
+    : [{ m: safeWord, t: "root", cn: word.cn || safeWord }];
+  return {
+    word: safeWord,
+    phonetic: word.phonetic?.trim() || "/未填写/",
+    cn: word.cn?.trim() || "未填写释义",
+    example: word.example?.trim() || `${safeWord} is useful.`,
+    tip: word.tip?.trim() || "",
+    cat: word.cat || "study",
+    memo: logic,
+    root: { parts, logic, family }
+  };
+}
+
 function rootsHTML(w) {
   if (!w.root) return "";
   const chips = w.root.parts.map(p =>
@@ -1245,6 +1269,86 @@ function rootsHTML(w) {
     <div class="roots-chips">${chips}</div>
     <div class="roots-logic"><strong>记忆口诀：</strong>${memo}</div>
     ${w.root.family ? `<div class="roots-family"><span>同根词：</span>${w.root.family}</div>` : ""}
+  </div>`;
+}
+
+function formatPhonetic(w, accent) {
+  return `${accent}${w.phonetic.replace(/^\//, "[").replace(/\/$/, "]")}`;
+}
+
+function getPartOfSpeech(w) {
+  const map = {
+    pronoun: "pron.", be: "v.", verb: "v.", tense: "v.", noun: "n.", adj: "adj.", adv: "adv.", det: "det.",
+    prep: "prep.", sentence: "conj.", time: "n./adv.", place: "adv.", emotion: "n.", life: "n.", study: "n.",
+    internet: "n./v.", work: "n./v."
+  };
+  return map[w.cat] || "n./v.";
+}
+
+function highlightWord(text, word) {
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return text.replace(new RegExp(`\\b(${escaped})\\b`, "ig"), `<span class="learn-highlight">$1</span>`);
+}
+
+function wordLettersHTML(word) {
+  return [...word].map(ch => `<span>${ch}</span>`).join("");
+}
+
+function splitWordParts(word) {
+  const clean = word.replace(/[^a-z]/ig, "");
+  if (!clean) return [word];
+  const vowels = "aeiou";
+  const parts = [];
+  let start = 0;
+  for (let i = 1; i < clean.length - 1; i++) {
+    if (vowels.includes(clean[i - 1].toLowerCase()) && !vowels.includes(clean[i].toLowerCase())) {
+      parts.push(clean.slice(start, i));
+      start = i;
+    }
+  }
+  parts.push(clean.slice(start));
+  return parts.filter(Boolean).length > 1 ? parts.filter(Boolean) : [clean];
+}
+
+function phonicsHTML(w) {
+  const parts = w.root?.parts?.length ? w.root.parts.map(p => ({ text: p.m.replace(/^-|-$/g, ""), sound: p.cn })) : splitWordParts(w.word).map(p => ({ text: p, sound: p }));
+  return parts.slice(0, 6).map(p => `<div class="phonics-unit"><span class="letter">${p.text}</span><span class="sound-text">${p.sound}</span></div>`).join("");
+}
+
+function dictEntryHTML(w) {
+  const parts = splitWordParts(w.word);
+  const family = w.root?.family || w.word;
+  const logic = w.root?.logic || w.memo || w.cn;
+  return `<div class="dict-entry">
+    <div class="word-actions">
+      <button class="mini-btn" onclick="openWordModal(${w.idx})">编辑</button>
+      <button class="mini-btn danger" onclick="deleteWord(${w.idx})">删除</button>
+    </div>
+    <div class="learn-card">
+      <div class="learn-left">
+        <div class="learn-word">${wordLettersHTML(w.word)}</div>
+        <div class="syllables">${parts.map(p => `<span class="syllable-pill">${p}</span>`).join("")}</div>
+        <div class="learn-phonetic">${formatPhonetic(w, "英")} <button class="sound" type="button" onclick="speakWord('${w.word}')">发音</button></div>
+        <div class="learn-meaning"><strong>${getPartOfSpeech(w)}</strong> ${w.cn}</div>
+        <div class="phonics-grid">${phonicsHTML(w)}</div>
+      </div>
+      <div class="learn-right">
+        <div class="learn-panel-title">学习卡片</div>
+        <div class="learn-section">
+          <div class="learn-label">例句</div>
+          <div class="learn-sentence">${highlightWord(w.example, w.word)}</div>
+          <div class="learn-cn">${w.cn}</div>
+        </div>
+        <div class="learn-section">
+          <div class="learn-label">记忆线索</div>
+          <div class="learn-family"><b>${w.word}</b>：${logic}</div>
+        </div>
+        <div class="learn-section">
+          <div class="learn-label">相关词</div>
+          <div class="learn-tags">${family.split(",").map(s => `<span class="learn-tag">${s.trim()}</span>`).join("")}</div>
+        </div>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -1264,6 +1368,64 @@ function updateStats() {
 }
 
 function setPracticeFilter(f) { currentFilter = f; buildFilterBar("practice-filter", "setPracticeFilter"); buildPractice(); }
+
+function openWordModal(index = null) {
+  editingWordIndex = index;
+  const w = index === null ? null : words[index];
+  const rootParts = w?.root?.parts?.map(p => `${p.m}:${p.cn}`).join(", ") || "";
+  const catOptions = Object.keys(CATEGORY_META).map(key => `<option value="${key}" ${w?.cat === key ? "selected" : ""}>${CATEGORY_META[key].label}</option>`).join("");
+  document.getElementById("word-modal-root").innerHTML = `<div class="modal-backdrop" onclick="closeWordModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-title">${index === null ? "添加单词" : "编辑单词"}</div>
+        <button class="mini-btn" onclick="closeWordModal()">关闭</button>
+      </div>
+      <form id="word-form" onsubmit="saveWordFromForm(event)">
+        <div class="form-grid">
+          <div class="form-field"><label>英文单词</label><input name="word" value="${w?.word || ""}" required></div>
+          <div class="form-field"><label>音标</label><input name="phonetic" value="${w?.phonetic || ""}" placeholder="/həˈloʊ/"></div>
+          <div class="form-field"><label>中文释义</label><input name="cn" value="${w?.cn || ""}" required></div>
+          <div class="form-field"><label>分类</label><select name="cat">${catOptions}</select></div>
+          <div class="form-field full"><label>例句</label><textarea name="example" required>${w?.example || ""}</textarea></div>
+          <div class="form-field full"><label>记忆线索</label><textarea name="logic" placeholder="例如：be + cause → 因为某个原因">${w?.root?.logic || w?.memo || ""}</textarea></div>
+          <div class="form-field full"><label>词根/拆分</label><input name="rootParts" value="${rootParts}" placeholder="格式：be:是, cause:原因"></div>
+          <div class="form-field full"><label>相关词/变形</label><input name="family" value="${w?.root?.family || ""}" placeholder="hello, hellos"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="check-btn" onclick="closeWordModal()">取消</button>
+          <button type="submit" class="check-btn primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>`;
+  setTimeout(() => document.querySelector('#word-form input[name="word"]')?.focus(), 50);
+}
+
+function closeWordModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById("word-modal-root").innerHTML = "";
+  editingWordIndex = null;
+}
+
+function saveWordFromForm(event) {
+  event.preventDefault();
+  const data = Object.fromEntries(new FormData(event.target).entries());
+  const normalized = normalizeWord(data);
+  if (editingWordIndex === null) words.push(normalized);
+  else words[editingWordIndex] = normalized;
+  saveCustomWords();
+  closeWordModal();
+  refreshCurrentViews();
+}
+
+function deleteWord(index) {
+  const w = words[index];
+  if (!w || !confirm(`确定删除「${w.word}」吗？`)) return;
+  words.splice(index, 1);
+  Object.keys(practiceState).forEach(k => delete practiceState[k]);
+  saveCustomWords();
+  refreshCurrentViews();
+}
 
 function recallPhrase(w) {
   const escaped = w.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -1291,27 +1453,20 @@ function buildPractice() {
     card.style.animationDelay = (fi * 0.03) + "s";
     card.innerHTML = `
       <div class="word-header">
-        <span class="word-en">${done ? `${w.word} <span style="font-size:0.72em;color:var(--ink-muted);font-family:inherit">(${w.cn})</span>` : `_____ <small style="font-size:0.7em;color:var(--ink-muted);font-family:inherit">主动回忆：先不要看英文</small>`}</span>
+        <span class="word-en">${done ? w.word : "_____"}</span>
         ${catBadge(w.cat)}
         <span class="badge ${done ? "badge-done" : "badge-todo"}" id="badge-${i}">${done ? "已掌握" : "待练习"}</span>
       </div>
       <div class="word-cn">${w.cn}</div>
       <div class="usage-note"><strong>短语填空：</strong>${recallPhrase(w)}</div>
       <div class="input-area">
-        <input class="spell-input" id="input-${i}" placeholder="只看中文和短语，填写英文单词" autocomplete="off" spellcheck="false" ${done ? "disabled" : ""} onkeydown="if(event.key==='Enter')checkSpell(${i})">
+        <input class="spell-input" id="input-${i}" placeholder="填写英文单词" autocomplete="off" spellcheck="false" ${done ? "disabled" : ""} onkeydown="if(event.key==='Enter')checkSpell(${i})">
         <button class="check-btn primary" onclick="checkSpell(${i})" ${done ? "disabled" : ""}>验证</button>
         <button class="check-btn" onclick="revealWord(${i})">显示答案</button>
       </div>
-      <div class="feedback" id="fb-${i}">${done ? `已掌握：${w.word} — ${w.cn}` : "先主动回忆，再验证"}</div>
+      <div class="feedback" id="fb-${i}">${done ? `${w.word} — ${w.cn}` : ""}</div>
       <div class="${done ? "" : "hidden"}" id="detail-${i}">
-        <div class="word-header" style="margin-top:14px">
-          <span class="word-en">${w.word}</span>
-          <span class="phonetic">${w.phonetic}</span>
-          <button class="check-btn" style="padding:6px 10px;font-size:0.8rem" onclick="speakWord('${w.word}')">🔊 发音</button>
-        </div>
-        ${rootsHTML(w)}
-        <div class="example">${w.example}</div>
-        <div class="tip">${w.tip}</div>
+        ${dictEntryHTML(w)}
       </div>`;
     container.appendChild(card);
   });
@@ -1326,7 +1481,7 @@ function checkSpell(i) {
   if (val === words[i].word.toLowerCase()) {
     input.className = "spell-input correct";
     fb.className = "feedback ok";
-    fb.textContent = "✓ 正确！现在再看完整解释加深记忆。";
+    fb.textContent = `${words[i].word} — ${words[i].cn}`;
     showRecallDetails(i);
     if (practiceState[i] !== "correct") {
       practiceState[i] = "correct";
@@ -1339,7 +1494,7 @@ function checkSpell(i) {
   } else {
     input.className = "spell-input wrong";
     fb.className = "feedback no";
-    fb.textContent = "拼写有误，再试试！";
+    fb.textContent = "拼写有误";
     if (practiceState[i] !== "correct" && !practiceState[i]) { practiceState[i] = "tried"; sessionPracticed++; }
   }
   updateStats();
@@ -1366,16 +1521,7 @@ function buildReview() {
     card.className = `card cat-${w.cat}`;
     card.style.animationDelay = (fi * 0.02) + "s";
     card.innerHTML = `
-      <div class="word-header">
-        <span class="word-en">${w.word}</span>
-        <span class="phonetic">${w.phonetic}</span>
-        <button class="check-btn" style="padding:6px 10px;font-size:0.8rem" onclick="speakWord('${w.word}')">🔊 发音</button>
-        ${catBadge(w.cat)}
-      </div>
-      <div class="word-cn">${w.cn}</div>
-      ${rootsHTML(w)}
-      <div class="example">${w.example}</div>
-      <div class="tip">${w.tip}</div>`;
+      ${dictEntryHTML(w)}`;
     container.appendChild(card);
   });
 }
@@ -1429,9 +1575,8 @@ function nextQuiz() {
     <div class="card quiz-card cat-${w.cat}">
       <div style="margin-bottom:8px">${catBadge(w.cat)}</div>
       <div class="word-cn">${w.cn}</div>
-      <div class="phonetic" style="margin-bottom:8px">${w.phonetic}</div>
-      ${rootsHTML(w)}
-      <div class="example" style="margin-bottom:14px">${w.example}</div>
+      <div class="dict-phonetic" style="margin-bottom:8px"><span>${formatPhonetic(w, "英")}</span><span>${formatPhonetic(w, "美")}</span></div>
+      <div class="dict-example" style="margin-bottom:14px">${w.example}</div>
       <div class="input-area">
         <input class="spell-input" id="qz-input" placeholder="根据提示拼写英文单词…" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')checkQuiz()">
         <button class="check-btn primary" onclick="checkQuiz()">验证</button>
@@ -1489,6 +1634,7 @@ backTopBtn.addEventListener("click", () => {
   else window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+loadCustomWords();
 buildFilterBar("practice-filter", "setPracticeFilter");
 buildPractice();
 </script>
